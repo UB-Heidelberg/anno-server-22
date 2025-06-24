@@ -132,7 +132,9 @@ const EX = {
         created: 'nonEmpty str',
       };
       const serverStub = { runHook: builtinDoNothingFunc };
-      const parsed = parseSubmittedAnno(pop, serverStub, configStubForPSA);
+      const requestStub = { getSrv() { return serverStub; } };
+      const psaCtx = { req: requestStub };
+      const parsed = parseSubmittedAnno(pop, configStubForPSA, psaCtx);
       // const createdTimeJs = new Date(parsed.created)).getTime();
       return parsed;
     }
