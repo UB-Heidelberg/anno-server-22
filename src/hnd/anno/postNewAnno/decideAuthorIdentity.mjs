@@ -16,22 +16,13 @@ function orf(x) { return x || false; }
 
 const EX = function decideAuthorIdentity(ctx) {
   const {
-    srv,
+    // srv,
     who,
     anno,
   } = ctx;
   if (!anno) { throw new Error('Cannot ' + EX.name + ' without anno.'); }
 
   if (anno.creator) { return EX.fromAnnoCreator(anno, who); }
-
-  const fallbackAgent = EX.guessMissingAuthorId(srv, who);
-  if (fallbackAgent) {
-    return {
-      agent: fallbackAgent,
-      authorized: true,
-      // isFallback: true // nope, rather check if anno.creator is truthy
-    };
-  }
 
   throw badRequest('Unable to detect or guess a valid author identity.');
 };
@@ -70,15 +61,6 @@ Object.assign(EX, {
     // console.debug('knownIdentities', knownIdentities);
     const accepted = knownIdentities.byAgentId.get(origAuthorId);
     return { agent: orf(accepted || crea1), authorized: !!accepted };
-  },
-
-
-  guessMissingAuthorId(srv, who) {
-    const fallbackIds = srv.lusrmgr.missingAuthorFallbackIdentityKeys;
-    if (!fallbackIds) { return; }
-    const knownIdentities = who.details.authorIdentities;
-    const found = fallbackIds.find(k => knownIdentities.has(k));
-    return (found && knownIdentities.get(found));
   },
 
 

@@ -1,6 +1,5 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
-import arrayOfTruths from 'array-of-truths';
 import makeExtendedOrderedMap from 'ordered-map-extended-pmb';
 import mustBe from 'typechecks-pmb/must-be.js';
 import pProps from 'p-props';
@@ -53,13 +52,6 @@ const EX = {
         bu = serverBaseUrl + bu;
       }
       return bu;
-    }());
-
-    mgr.missingAuthorFallbackIdentityKeys = (function parse() {
-      const cfgKey = 'missing_author_fallback_identity_keys';
-      const origSpec = mustPopCfgMeta('ary | nul | undef', cfgKey);
-      const aiKeys = arrayOfTruths(origSpec);
-      return aiKeys;
     }());
   },
 
