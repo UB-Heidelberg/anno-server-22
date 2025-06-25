@@ -6,7 +6,7 @@
     annoBrowserRedirect: '%sc/%bi/image,info'
     # ^-- For available slots, see `src/hnd/anno/browserRedirect.mjs`
 
-    approvalRequired: true
+    approvalRequired: false
 
     autoRequestNextVersionDoi: true
     # ^- If enabled, when a revision is submitted for a version that has
