@@ -171,7 +171,7 @@ The anno server works perfectly well even without a DOI bot.
         as the docker-capable user.
     1.  The expected good response should include a section "docker-init:"
         with a "version:" entry.
-    1.  If that enty is missing, fix permissions and/or docker.
+    1.  If that entry is missing, fix permissions and/or docker.
         Unfortunately, that's ouf of scope for this guide.
 
 ### ENDOF deprecated
