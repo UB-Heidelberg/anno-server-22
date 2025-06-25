@@ -10,35 +10,23 @@
         # All identities should conform to the `Agent` model as described
         # in https://www.w3.org/TR/annotation-model/#agents .
 
-        main:
-            # ^-- The author ID key:
-            #   … should either consist of only [A-Za-z0-9_-]+ or be a URL.
-            #   … is meant to be human readable for admin convenience.
-            #
-            # In cases where you don't have a preference, we suggest using a
-            # randomness-based (i.e. v4) UUID packaged as a URL by adding the
-            # prefix `urn:uuid:` (RFC 4122).
-            # Linux has a UUID generator in `/proc/sys/kernel/random/uuid`.
-            #
-            # Author ID keys that look like a URL will be used as the default
-            # value for the Agent's `id` field. Otherwise, the Agent ID
-            # defaults to a false-y value. False-y values for the Agent ID
-            # will be replaced with an auto-generated UUID URL.
-
+        'arno.nym@example.net':
+            # ^-- The [author ID key](author_id_keys.md). Rules apply!
             name: 'Arno Nym'
             type: Person
-            email: 'arno.nym@example.net'
+            email: '^' # <-- special value: use the author ID key.
             INHERITS:
                 # The `INHERITS` option can be used to include fragments
                 # from the `custom_data` config category.
                 - 'user_icon_fragments.wp_vector_anon'
 
-        minimal:
+
+        'arno.minimal@as22-docs.example.net':
             name: 'A. Nym'
             type: Person
 
 
-        doi_bot_test:
+        'doi_bot_test@as22-docs.example.net':
             name: 'Josiah S. Carberry'
             type: Person
             email: 'jscarberry@example.net'

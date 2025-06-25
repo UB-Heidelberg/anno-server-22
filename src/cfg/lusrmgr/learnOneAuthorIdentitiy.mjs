@@ -2,14 +2,18 @@
 
 import uuidv5 from 'uuidv5';
 
+import validateAuthorIdKey from './authorIdKeys.validate.mjs';
+
 
 const EX = function learnOneAuthorIdentitiy(ctx, aidKey, origSpec) {
   if (!origSpec) { return; }
   const agent = ctx.mergeInheritedFragments(origSpec);
   let agentId = agent.id;
+  if (agent.email === '^') { agent.email = agentId; }
   if (!agentId) {
     agentId = aidKey;
-    if (!EX.mightBeUrl(agentId)) {
+    const vali = validateAuthorIdKey.expectValid(agentId);
+    if (!vali.mightBeUrl) {
       const profileUrl = ctx.mgr.authorAgentUuidBaseUrl + encodeURI(agentId);
       agentId = 'urn:uuid:' + uuidv5('url', profileUrl);
     }
@@ -25,14 +29,6 @@ const EX = function learnOneAuthorIdentitiy(ctx, aidKey, origSpec) {
   }
   auIds.byAgentId.set(agent.id, agent);
 };
-
-
-Object.assign(EX, {
-
-  mightBeUrl(x) { return /^\w+:/.test(x || ''); },
-
-
-});
 
 
 export default EX;
