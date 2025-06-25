@@ -2,7 +2,7 @@
 
 import fsPromises from 'fs/promises';
 
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import readDataFile from 'read-data-file';
 
 

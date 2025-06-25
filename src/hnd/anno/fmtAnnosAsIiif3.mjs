@@ -2,7 +2,7 @@
 
 import arrayOfTruths from 'array-of-truths';
 import getOwn from 'getown';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import shapeToPath from 'svg-shape-to-path-pmb';
 import xmlAttrDict from 'xmlattrdict';
 

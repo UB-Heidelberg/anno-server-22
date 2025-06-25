@@ -4,7 +4,7 @@ import guessAndParseSubjectTargetUrl
   from 'webanno-guess-subject-target-url-pmb/extra/parse.mjs';
 
 import arrayOfTruths from 'array-of-truths';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 
 import httpErrors from '../../httpErrors.mjs';
 import parseVersId from './parseVersionIdentifier.mjs';

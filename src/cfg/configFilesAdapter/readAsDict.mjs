@@ -5,7 +5,7 @@ import pathLib from 'path';
 import getOwn from 'getown';
 import mapKeys from 'lodash.mapkeys';
 import mergeOpt from 'merge-options';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 
 import coreApi from './coreApi.mjs';
 import oppoRead from './opportunisticReaders.mjs';

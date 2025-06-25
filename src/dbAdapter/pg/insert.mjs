@@ -1,6 +1,6 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import pgDumpWriter from 'postgres-dump-writer-helpers-220524-pmb';
 
 function callIfTruthy(f, ...a) { return f && f(...a); }

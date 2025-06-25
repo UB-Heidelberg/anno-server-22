@@ -3,7 +3,7 @@
 import arrayOfTruths from 'array-of-truths';
 import dateFmtRfc822 from 'rfc822-date';
 import mapValues from 'lodash.mapvalues';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import xmlenc from 'xmlunidefuse';
 
 import fmtAnnoRssLink from '../rss/fmtAnnoRssLink.mjs';

@@ -3,7 +3,7 @@
 import bodyParser from 'body-parser';
 import fixStringsDeeplyInplace from 'fix-unicode-strings-deeply-inplace-pmb';
 import getOwn from 'getown';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import objPop from 'objpop';
 import pify from 'pify';
 

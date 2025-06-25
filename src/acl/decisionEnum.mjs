@@ -1,7 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
 import loMapValues from 'lodash.mapvalues';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 
 
 const safeDefaultValue = 'deny';

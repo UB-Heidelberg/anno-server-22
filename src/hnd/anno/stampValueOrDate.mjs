@@ -1,6 +1,6 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 
 const validateStampType = mustBe('nonEmpty str', 'stamp type');
 

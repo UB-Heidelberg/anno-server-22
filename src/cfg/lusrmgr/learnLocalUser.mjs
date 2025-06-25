@@ -2,7 +2,7 @@
 
 import arrayOfTruths from 'array-of-truths';
 import makeExtendedOrderedMap from 'ordered-map-extended-pmb';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import pProps from 'p-props';
 
 import learnUpstreamUserIdAliases from './learnUpstreamUserIdAliases.mjs';

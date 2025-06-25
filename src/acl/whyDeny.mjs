@@ -1,7 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
 import getOwn from 'getown';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import sortedJson from 'safe-sortedjson';
 import getOrAddKey from 'getoraddkey-simple';
 

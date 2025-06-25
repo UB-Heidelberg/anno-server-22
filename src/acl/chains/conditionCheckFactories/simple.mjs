@@ -2,7 +2,7 @@
 
 import arrayOfTruths from 'array-of-truths';
 import objDive from 'objdive';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 
 import makeTemplateSpecListIntersectionChecker from
   '../templateSpecListIntersectionChecker.mjs';

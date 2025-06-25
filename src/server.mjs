@@ -4,7 +4,7 @@ import absDir from 'absdir';
 import envcfgMergeConfigs from 'envcfg-merge-configs-pmb';
 import express from 'express';
 import makeHookRunner from 'hookrunner25a-pmb';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import nodeHttp from 'http';
 import objPop from 'objpop';
 import PrRouter from 'express-promise-router';

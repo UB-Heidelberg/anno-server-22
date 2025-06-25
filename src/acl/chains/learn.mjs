@@ -2,7 +2,7 @@
 
 import arrayOfTruths from 'array-of-truths';
 import getOwn from 'getown';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import objFromKeys from 'obj-from-keys-list';
 import objPop from 'objpop';
 import pEachSeries from 'p-each-series';

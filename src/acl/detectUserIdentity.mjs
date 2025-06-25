@@ -1,6 +1,6 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import pEachSeries from 'p-each-series';
 import vTry from 'vtry';
 

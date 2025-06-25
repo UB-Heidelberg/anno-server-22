@@ -5,7 +5,7 @@ import osLib from 'os';
 import absDir from 'absdir';
 import crObAss from 'create-object-and-assign';
 import makeExtendedOrderedMap from 'ordered-map-extended-pmb';
-import mustBe from 'typechecks-pmb/must-be';
+import mustBe from 'typechecks-pmb/must-be.js';
 import objPop from 'objpop';
 
 
