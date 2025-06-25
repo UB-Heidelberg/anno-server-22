@@ -29,7 +29,7 @@ const EX = async function serveExactVersion(ctx) {
   if (req.method !== 'GET') { throw methodNotAllowed(); }
 
   const earlyFields = {};
-  if (clientPrefersHtml(req)) {
+  if (clientPrefersHtml(req) || req.untrustedDebugOpt().yesredir) {
     const redirUrl = browserRedirect.fmtUrl(found, ctx);
     if (redirUrl) {
       if (req.untrustedDebugOpt().noredir) {

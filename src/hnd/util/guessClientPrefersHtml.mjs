@@ -24,7 +24,9 @@ const EX = function guessClientPrefersHtml(req) {
   // Ideally we'd check the order with respect to priorities assigned.
   // However, in practice, for all usual browsers, this simple prefix
   // check is enough:
-  return acceptedMediaTypes.startsWith('text/html,');
+  const htmlPrefix = 'text/html'; /* Could be followed by ',' or ';',
+    but not worth two checks or a RegExp check. */
+  return acceptedMediaTypes.startsWith(htmlPrefix);
 };
 
 
