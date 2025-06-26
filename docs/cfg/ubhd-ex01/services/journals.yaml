@@ -3,7 +3,7 @@
 ---
 
 ^:
-    INHERITS: 'svctpl.diglit-like'
+    INHERITS: 'svctpl.journals-like'
 
     targetUrlMetadata:
         prefixes:
