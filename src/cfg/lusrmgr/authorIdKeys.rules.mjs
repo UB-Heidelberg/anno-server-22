@@ -22,7 +22,7 @@ Acceptable separators are:
 Reasons why certain separators are forbidden:
 
   * U+0025 percent sign (%): Avoid double URL encoding.
-  * U+003A colon (:): Avoid overlap with valid UUID URLs.
+  * U+003A colon (:): Avoid overlap with valid UUID URNs.
 
 */
 
