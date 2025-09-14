@@ -14,7 +14,7 @@ function dinst_main () {
 
   local TASK="${1:-dockerize}"; shift
   "${FUNCNAME%_*}_$TASK" "$@" || return $?$(
-    echo "E: Task '$TASK' failed with error code $?" >&2)
+    echo "E: Task '$TASK' failed with error code $? after $SECONDS sec." >&2)
 }
 
 
@@ -62,7 +62,8 @@ function dinst_dockerize () {
   dinst_fix_npm_file_perms . || return $?
   dinst_fix_npm_file_perms /extras || return $?
 
-  echo; chapterize 'All done.'
+  echo; chapterize "All done. Installation took $SECONDS seconds. $(
+    )Local time now: $(printf '%(%F %T)T' -1)"
   case "$DK_TASK" in
     install )
       grep -HnPie '\b(?!0 )\d+ vulnerabilit' -- "$NPM_AUDIT_LOG" || true
