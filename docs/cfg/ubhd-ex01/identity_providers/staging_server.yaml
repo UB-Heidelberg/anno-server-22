@@ -40,7 +40,7 @@ upstream_userid_transforms:
 
     simplify:
         -   replace_regexp: >
-                ^https://idp\.uni-heidelberg\.de!https://\w+\.ub\.uni-heidelberg\.de/[#-~]+!
+                ^https://idp\.uni-heidelberg\.de!https://[\w\-]+\.ub\.uni-heidelberg\.de/[#-~]+!
             # ^-- Shibboleth URLs on our staging server.
             replace_with: 'staging:'
 
