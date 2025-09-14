@@ -10,6 +10,7 @@
         setSlot: null   # null = Import dictionary rather than a single slot.
         dict: 'diglit_aclmeta'
         searchFor: '<$projectName>'
+        public: true
         notFound:
             sammlung: 'PROJEKT_OHNE_SAMMLUNG'
 
