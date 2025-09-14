@@ -63,7 +63,15 @@ Object.assign(EX, {
     }
     if (nSub >= 2) {
       const msg = 'Anno subresource not implemented: ' + sub1;
-      errNotImpl(msg);
+      errNotImpl(msg); /*
+        For 401..404 we'd have to check whether the anno `versId` exists
+        (404?) and whether the user has access (401/403?), but here it's
+        not worth the effort for DB and ACL lookups.
+        Technically, the notion of "sub" resources is entirely contained
+        within this project, and not prescribe by any RFC, so the status
+        code here may be fully independent of any annotation.
+        Unfortunately, this is not based on a rule, but on a lack of rules.
+        See `docs/api/url_structure/implied_hierarchy.md`. */
     }
     throw new Error('Bad route declaration');
   },
