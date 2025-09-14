@@ -7,8 +7,8 @@ Apache Setup
 
 * Your `mod_proxy` config should probably look like
   [shibboleth_mod_proxy.txt](shibboleth_mod_proxy.txt).
-  * Our example uses [Shibboleth
-    ](https://en.wikipedia.org/wiki/Shibboleth_Single_Sign-on_architecture)
+  * Our example uses [Shibboleth](
+    https://en.wikipedia.org/wiki/Shibboleth_Single_Sign-on_architecture)
     for user login.
     ([`mod_shib`](https://packages.ubuntu.com/focal/libapache2-mod-shib),
     [Website](https://www.shibboleth.net/))

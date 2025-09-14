@@ -33,8 +33,8 @@ Configuration overview
 
 * [Docker config](docs/cfg/as22.devdock/config/):
   Paths, network connectivity etc.
-  * 🛠 [Interact with the dockerized Postgres database
-    ](docs/cfg/as22.devdock/README.md#database-commands-docker)
+  * 🛠 [Interact with the dockerized Postgres database](
+    docs/cfg/as22.devdock/README.md#database-commands-docker)
 
 * [Instance config](docs/cfg/ubhd-ex01/):
   Everything about annotations, users and permissions.
