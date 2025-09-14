@@ -18,13 +18,14 @@ const EX = async function whyDeny(req, actionMeta) {
     aclMetaSpy,
     ...allMeta
   } = actionMeta;
+  const srv = req.getSrv();
 
   const metaCache = getOrAddKey(req, 'aclMetaCache', '{}');
   const mustMeta = mustBe.tProp('ACL metadata property ', allMeta);
 
   const tgtUrl = (mustMeta('nonEmpty str | undef', 'targetUrl') || false);
   const urlMeta = tgtUrl && (getOrAddKey(metaCache, 'tgtUrl:' + tgtUrl,
-    () => req.getSrv().services.findMetadataByTargetUrl(tgtUrl)));
+    () => srv.services.findMetadataByTargetUrl(tgtUrl)));
 
   const userMeta = await getOrAddKey(metaCache, 'user',
     () => detectUserIdentity(req));
@@ -89,8 +90,11 @@ const EX = async function whyDeny(req, actionMeta) {
     req.logCkp('E: ACL: invalid decision!', { decision });
   }
 
-  const denyMsg = ('Lacking permission ' + allMeta.privilegeName
+  let denyMsg = ('Lacking permission ' + allMeta.privilegeName
     + ' on ' + sortedJson(pubMeta, { mergeNlWsp: true }));
+  if (srv.serverDebugFlags.reportInternalAclMeta) {
+    denyMsg += '\n\nAll ACL meta (including internal): ' + sortedJson(allMeta);
+  }
   const errDeny = httpErrors.aclDeny.throwable(denyMsg);
   return errDeny;
 };
