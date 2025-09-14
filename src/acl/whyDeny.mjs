@@ -36,9 +36,11 @@ const EX = async function whyDeny(req, actionMeta) {
     // may be sent to the client as part of explanation.
     // privilegeName: not here becaue it's in the main error message already.
     userId: (userMeta.userId || ''),
-    ...urlMeta,
+    ...urlMeta.publicMeta,
   };
-  Object.assign(allMeta, pubMeta);
+  Object.assign(allMeta,
+    urlMeta.internalMeta,
+    pubMeta);
   if (aclMetaSpy) {
     Object.assign(aclMetaSpy, allMeta);
     EX.metaSpySvcBoolCounters.forEach(function incr(p) {

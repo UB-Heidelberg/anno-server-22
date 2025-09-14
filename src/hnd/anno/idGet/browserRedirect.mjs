@@ -2,6 +2,13 @@
 
 import makeDictList from 'dictlist-util-pmb';
 
+import httpErrors from '../../../httpErrors.mjs';
+
+
+const {
+  fubar,
+} = httpErrors.throwable;
+
 
 function orf(x) { return x || false; }
 
@@ -16,10 +23,15 @@ function slot(val) {
 const EX = {
 
   fmtUrl(found, ctx) {
-    const urlMeta = found.primarySubjectUrlMeta(ctx.req);
-    const svcId = urlMeta.serviceId;
+    const urlPubMeta = found.primarySubjectUrlMeta(ctx.req).publicMeta;
+    if (!urlPubMeta) {
+      throw fubar('No public URL metadata for primary subject target');
+    }
+    const svcId = urlPubMeta.serviceId;
     const svcCfg = svcId && ctx.srv.services.get(svcId);
-    if (!svcCfg) { throw new Error('Failed to lookup service config'); }
+    if (!svcCfg) {
+      throw new Error('Failed to lookup service config for ' + svcId);
+    }
     let url = svcCfg.annoBrowserRedirect || '%sc';
     url = url.replace(/%sv/g, svcId);
 

@@ -1,5 +1,6 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
+import crObAss from 'create-object-and-assign';
 import lookupRevHostInDeepDict from 'lookup-reverse-hostname-in-deep-dict';
 import splitOnce from 'split-string-or-buffer-once-pmb';
 
@@ -7,6 +8,23 @@ import httpErrors from '../httpErrors.mjs';
 
 
 function orf(x) { return x || false; }
+
+
+const commonSvcMetaDataApi = { /*
+  Common API for service metadata lookup results, independent of how you
+  specify the service. */
+
+  allMeta: function allMetaForTargetUrl() {
+    /* This function cannot easily be replaced by a generic merge function
+      because it has to observe priority of contradiction homonymous keys:
+      Secret internal facts may override an educated guess that an outside
+      observer would have infered from the URL, while publicMeta must still
+      preserve what was conveyed by the URL.
+    */
+    return { ...this.publicMeta, ...this.internalMeta };
+  },
+
+};
 
 
 const EX = {
@@ -55,23 +73,33 @@ const EX = {
       const msg = 'No data for service ID: ' + svcId;
       throw httpErrors.aclDeny.throwable(msg);
     }
-    const meta = {
+    const publicMeta = { /*
+      public = may safely be disclosed to clients, because anyone could
+      infer it from the URL anyways.
+      */
       serviceId: svcId,
       serviceUrlPrefix: pfx,
+      ...svcInfo.staticPublicAclMeta,
+    };
+    const internalMeta = { /*
+      Additional info that we have on the server but is not obvious
+      from the URL, and thus shoud be kept secret.
+      */
       ...svcInfo.staticAclMeta,
     };
-    svcCfgFlagNames.forEach((k) => { meta[k] = Boolean(svcInfo[k]); });
+    EX.svcCfgFlagNames.forEach(
+      (k) => { internalMeta[k] = Boolean(svcInfo[k]); });
 
     const tumCfg = svcInfo.targetUrlMetadata;
     const subUrl = tgtUrl.slice(svcFromPrefix.pfx.length);
     (tumCfg.vSubDirs || []).reduce(function learn(remain, slot) {
       const rmnOrEmpty = (remain || '');
       const [val, more] = (splitOnce('/', rmnOrEmpty) || [rmnOrEmpty]);
-      if (slot) { meta[slot] = val; }
+      if (slot) { publicMeta[slot] = val; }
       return more;
     }, subUrl);
 
-    return meta;
+    return crObAss(commonSvcMetaDataApi, { publicMeta, internalMeta });
   },
 
 

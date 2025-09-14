@@ -42,18 +42,18 @@ EX.api = {
 
   getChainByName(cn) { return this.chainsByName.get(cn); },
 
-  async requirePerm(req, initMeta) {
+  async requirePerm(req, actionInternalMeta) {
     const acl = this;
-    const nope = await acl.whyDeny(req, initMeta);
+    const nope = await acl.whyDeny(req, actionInternalMeta);
     if (nope) { throw nope; }
   },
 
-  async requirePermForAllTargetUrls(req, subjTgtUrls, commonMeta) {
+  async requirePermForAllTargetUrls(req, subjTgtUrls, commonInternalMeta) {
     const acl = this;
     const uniq = robustUniq(subjTgtUrls);
     if (!uniq.length) { uniq.push('about:unknowntarget'); }
     await pMap(uniq, stu => acl.requirePerm(req,
-      { ...commonMeta, targetUrl: stu }));
+      { ...commonInternalMeta, targetUrl: stu }));
   },
 
 };
