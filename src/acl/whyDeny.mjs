@@ -6,7 +6,7 @@ import mustBe from 'typechecks-pmb/must-be.js';
 import sortedJson from 'safe-sortedjson';
 
 import httpErrors from '../httpErrors.mjs';
-import servicesAdapter from '../cfg/servicesAdapter.mjs';
+import servicesApi from '../cfg/servicesApi.mjs';
 
 import aclSubChain from './chains/aclSubChain.mjs';
 import detectUserIdentity from './detectUserIdentity.mjs';
@@ -103,7 +103,7 @@ const EX = async function whyDeny(req, actionMeta) {
 Object.assign(EX, {
 
   metaSpySvcBoolCounters: [
-    ...servicesAdapter.svcCfgFlagNames,
+    ...servicesApi.svcCfgFlagNames,
   ],
 
 
