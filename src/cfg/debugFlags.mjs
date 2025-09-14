@@ -10,6 +10,7 @@ const EX = {
     if (!flags) { return false; }
     flags = flags.split(/\s*\n\s*/).map(function eachLine(ln) {
       if (ln.startsWith('#')) { return ''; }
+      if (ln.endsWith('#')) { return ''; }
       return ln.replace(/\s+/g, '&');
     }).join('&');
     flags = qrystr(flags);
