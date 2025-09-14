@@ -5,7 +5,7 @@ import loggers from 'express-final-text-response-pmb/extras/req.logCkp.mjs';
 
 
 const permaFtrOpt = {
-  ...loggers,
+  ...loggers, // <- includes logHUnkErr
   knownMimeTypes: {
     ...genericFTR.dfCfg.knownMimeTypes,
     annoLD: 'application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"',
