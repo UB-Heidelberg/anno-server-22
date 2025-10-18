@@ -191,9 +191,10 @@ Object.assign(EX, {
   },
 
   async checkServiceConfigStuff(ctx) {
+    const papn = ctx.postActionPrivName;
     const servicesInvolved = new Set();
     const aclMetaSpy = {};
-    await ctx.requirePermForSubjTgtUrls(ctx.postActionPrivName, {
+    await ctx.requirePermForSubjTgtUrls(papn, {
       aclMetaSpy,
       aclMetaSpyEach(meta) { servicesInvolved.add(meta.serviceId); },
     });
