@@ -196,7 +196,9 @@ Object.assign(EX, {
     const aclMetaSpy = {};
     const aclOpt = {
       aclMetaSpy,
-      aclMetaSpyEach(meta) { servicesInvolved.add(meta.serviceId); },
+    };
+    aclOpt.aclMetaSpyEach = function spy(meta) {
+      servicesInvolved.add(meta.serviceId);
     };
     await ctx.requirePermForSubjTgtUrls(papn, aclOpt);
     if (servicesInvolved.size > 1) {
