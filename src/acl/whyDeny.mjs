@@ -1,6 +1,5 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
-import getOrAddKey from 'getoraddkey-simple';
 import getOwn from 'getown';
 import mustBe from 'typechecks-pmb/must-be.js';
 import sortedJson from 'safe-sortedjson';
@@ -8,39 +7,39 @@ import sortedJson from 'safe-sortedjson';
 import httpErrors from '../httpErrors.mjs';
 import servicesApi from '../cfg/servicesApi.mjs';
 
+import aclMetaCache from './aclMetaCache.mjs';
 import aclSubChain from './chains/aclSubChain.mjs';
-import detectUserIdentity from './detectUserIdentity.mjs';
 
 
-const EX = async function whyDeny(req, actionMeta) {
+const EX = async function whyDeny(req, actionMetaAndSpecials) {
   const acl = this;
   const {
     aclMetaSpy,
-    ...allMeta
-  } = actionMeta;
+    privilegeName,
+    targetUrl,
+    ...staticActionMeta
+  } = actionMetaAndSpecials;
   const srv = req.getSrv();
+  mustBe.nest('privilegeName for whyDeny call', privilegeName);
 
-  const metaCache = getOrAddKey(req, 'aclMetaCache', '{}');
+  const aclMetaCacheView = (Boolean(targetUrl)
+    && await aclMetaCache.byTargetUrl(req, targetUrl));
+  const userMetaCacheView = await aclMetaCache.userInfo(req);
+  const combinedAclMeta = aclMetaCache.combineEntries(
+    aclMetaCacheView,
+    userMetaCacheView,
+  );
+  const allMeta = combinedAclMeta.allMeta();
+  Object.assign(allMeta, staticActionMeta);
+  const pubMeta = combinedAclMeta.publicMeta;
+  const forcedMeta = {
+    privilegeName,
+    targetUrl,
+  };
+  Object.assign(pubMeta, forcedMeta);
+  Object.assign(allMeta, forcedMeta);
   const mustMeta = mustBe.tProp('ACL metadata property ', allMeta);
 
-  const tgtUrl = (mustMeta('nonEmpty str | undef', 'targetUrl') || false);
-  const urlMeta = tgtUrl && (getOrAddKey(metaCache, 'tgtUrl:' + tgtUrl,
-    () => srv.services.findMetadataByTargetUrl(tgtUrl)));
-
-  const userMeta = await getOrAddKey(metaCache, 'user',
-    () => detectUserIdentity(req));
-  metaCache.user = userMeta;
-
-  const pubMeta = {
-    // ACL metadata that is ok to be "public" in the sense that it
-    // may be sent to the client as part of explanation.
-    // privilegeName: not here becaue it's in the main error message already.
-    userId: (userMeta.userId || ''),
-    ...urlMeta.publicMeta,
-  };
-  Object.assign(allMeta,
-    urlMeta.internalMeta,
-    pubMeta);
   if (aclMetaSpy) {
     Object.assign(aclMetaSpy, allMeta);
     EX.metaSpySvcBoolCounters.forEach(function incr(p) {
@@ -69,7 +68,7 @@ const EX = async function whyDeny(req, actionMeta) {
 
   if ((decision === null) || (decision === 'stop')) {
     const { tendencies } = chainCtx.state;
-    decision = getOwn(tendencies, allMeta.privilegeName);
+    decision = getOwn(tendencies, privilegeName);
     if (decision === undefined) { decision = getOwn(tendencies, '*'); }
   }
 
@@ -80,7 +79,7 @@ const EX = async function whyDeny(req, actionMeta) {
     };
     aclMetaSpy.allPrivilegesPreview = all;
     const byStu = aclMetaSpy.aclPreviewBySubjectTargetUrl;
-    if (byStu) { byStu[tgtUrl] = all; }
+    if (byStu) { byStu[targetUrl] = all; }
   }
 
   if (decision === 'allow') {
@@ -92,7 +91,7 @@ const EX = async function whyDeny(req, actionMeta) {
     req.logCkp('E: ACL: invalid decision!', { decision });
   }
 
-  let denyMsg = ('Lacking permission ' + allMeta.privilegeName
+  let denyMsg = ('Lacking permission ' + privilegeName
     + ' on ' + sortedJson(pubMeta, { mergeNlWsp: true }));
   if (srv.serverDebugFlags.reportInternalAclMeta) {
     denyMsg += '\n\nAll ACL meta (including internal): ' + sortedJson(allMeta);
