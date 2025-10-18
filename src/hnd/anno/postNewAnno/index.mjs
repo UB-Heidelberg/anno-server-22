@@ -209,12 +209,14 @@ Object.assign(EX, {
   decideBareStamps(ctx) {
     const bs = [];
     const mfi = miscMetaFieldInfos;
-    const flag = ctx.anySvcCfgFlag;
-    if (flag('approvalRequired')) { bs.push(mfi.unapprovedStampName); }
+    const needsApproval = ctx.anySvcCfgFlag('approvalRequired');
+    if (needsApproval) { bs.push(mfi.unapprovedStampName); }
 
     const old = orf(ctx.oldAnnoDetails);
-    if (old[mfi.doiStampName] && flag('autoRequestNextVersionDoi')) {
-      bs.push(mfi.doiRequestStampName);
+    if (old[mfi.doiStampName]) {
+      if (ctx.anySvcCfgFlag('autoRequestNextVersionDoi')) {
+        bs.push(mfi.doiRequestStampName);
+      }
     }
 
     return bs;
