@@ -194,10 +194,11 @@ Object.assign(EX, {
     const papn = ctx.postActionPrivName;
     const servicesInvolved = new Set();
     const aclMetaSpy = {};
-    await ctx.requirePermForSubjTgtUrls(papn, {
+    const aclOpt = {
       aclMetaSpy,
       aclMetaSpyEach(meta) { servicesInvolved.add(meta.serviceId); },
-    });
+    };
+    await ctx.requirePermForSubjTgtUrls(papn, aclOpt);
     if (servicesInvolved.size > 1) {
       await ctx.requirePermForSubjTgtUrls('create_across_services');
     }
