@@ -16,7 +16,7 @@ function orf(x) { return x || false; }
 const essentialMandatoryBool = 'bool'; /*
   This alias is just to clarify that these options are so important that
   we force users to make an explicit choice, so that we are able to detect
-  when their config decision got lost by accidet. */
+  when their config decision got lost by accident. */
 
 
 const EX = {
