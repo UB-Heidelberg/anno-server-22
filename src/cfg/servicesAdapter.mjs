@@ -69,7 +69,7 @@ const EX = {
     EX.learnRssFeeds(ctx, svcId, prefixes,
       copy('rssFeeds', 'dictObj | nul | undef'));
     copy('annoBrowserRedirect', 'str | nul | undef');
-    copy('approvalRequired', essentialMandatoryBool);
+    copy('approvalRequired', 'bool | nul | undef');
     copy('autoRequestNextVersionDoi', essentialMandatoryBool);
     copy('staticAclMeta', 'dictObj | nul | undef');
 
