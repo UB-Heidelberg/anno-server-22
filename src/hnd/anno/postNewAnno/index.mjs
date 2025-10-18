@@ -194,9 +194,7 @@ Object.assign(EX, {
     const papn = ctx.postActionPrivName;
     const servicesInvolved = new Set();
     const aclMetaSpy = {};
-    const aclOpt = {
-      aclMetaSpy,
-    };
+    const aclOpt = { aclMetaSpy };
     aclOpt.aclMetaSpyEach = function spy(meta) {
       servicesInvolved.add(meta.serviceId);
     };
