@@ -41,7 +41,7 @@ function generateRandomBaseId() {
 
 function orf(x) { return x || false; }
 function panic(msg) { throw new Error(msg); }
-// function jsonDebug(x) { throw badRequest(JSON.stringify(x, null, 2)); }
+function jsonDebug(x) { throw badRequest(JSON.stringify(x, null, 2)); }
 
 
 const EX = async function postNewAnno(srv, req) {
@@ -157,6 +157,16 @@ const EX = async function postNewAnno(srv, req) {
     st_effts: null,
     st_detail: null,
   }, 'st_type', bareStamps);
+
+  const diagOpt = 'postNewAnnoDiagnoseAndRefuse';
+  if (req.untrustedDebugOpt()[diagOpt]) {
+    if (srv.serverDebugFlags.postNewAnnoDiagnoseAndRefuse) {
+      return jsonDebug({ refusedBy: diagOpt, stampRecs, relRecs });
+    }
+    throw badRequest('Requested feature is disabled: ' + diagOpt); /*
+      Needs to be enabled because it could leak internal information
+      like approval stamp queue names. */
+  }
 
   // Now that all data has been validated, we can actually write to the DB.
   await srv.db.postgresInsertOneRecord('anno_data', dataRec, {
