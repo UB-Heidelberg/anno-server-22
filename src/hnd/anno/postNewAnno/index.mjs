@@ -13,6 +13,7 @@ import sendFinalTextResponse from '../../../finalTextResponse.mjs';
 import categorizeTargets from '../categorizeTargets.mjs';
 import miscMetaFieldInfos from '../miscMetaFieldInfos.mjs';
 
+import checkServiceConfigStuff from './checkServiceConfigStuff.mjs';
 import checkVersionModifications from './checkVersionModifications.mjs';
 import decideAuthorIdentity from './decideAuthorIdentity.mjs';
 import decideStamps from './decideStamps.mjs';
@@ -108,7 +109,7 @@ const EX = async function postNewAnno(srv, req) {
     throw badRequest(msg);
   }
 
-  await EX.checkServiceConfigStuff(ctx);
+  await checkServiceConfigStuff(ctx);
 
   const previewMode = (anno.id === 'about:preview');
   if (!previewMode) {
@@ -193,22 +194,6 @@ Object.assign(EX, {
       }
       throw authorIdentityNotConfigured();
     }());
-  },
-
-  async checkServiceConfigStuff(ctx) {
-    const papn = ctx.postActionPrivName;
-    const servicesInvolved = new Set();
-    const aclMetaSpy = {};
-    const aclOpt = { aclMetaSpy };
-    aclOpt.aclMetaSpyEach = function spy(meta) {
-      servicesInvolved.add(meta.serviceId);
-    };
-    await ctx.requirePermForSubjTgtUrls(papn, aclOpt);
-    if (servicesInvolved.size > 1) {
-      await ctx.requirePermForSubjTgtUrls('create_across_services');
-    }
-    ctx.anySvcCfgFlag = flag => !!aclMetaSpy['nServicesWith:' + flag];
-    // ^-- :TODO: Why does eslint allow this param reassignment?
   },
 
 
