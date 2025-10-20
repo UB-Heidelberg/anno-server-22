@@ -1,6 +1,5 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
-import mapMergeDefaults from 'map-merge-defaults-pmb';
 import pEachSeries from 'p-each-series';
 import randomUuid from 'uuid-random';
 
@@ -16,6 +15,7 @@ import miscMetaFieldInfos from '../miscMetaFieldInfos.mjs';
 
 import checkVersionModifications from './checkVersionModifications.mjs';
 import decideAuthorIdentity from './decideAuthorIdentity.mjs';
+import decideStamps from './decideStamps.mjs';
 import fmtRelRecs from './fmtRelRecs.mjs';
 import parseSubmittedAnno from './parseSubmittedAnno.mjs';
 
@@ -129,6 +129,7 @@ const EX = async function postNewAnno(srv, req) {
   anno.created = (new Date()).toISOString();
   if (!ctx.idParts.baseId) { ctx.idParts.baseId = generateRandomBaseId(); }
   const fullAnno = redundantGenericAnnoMeta.add(srv, ctx.idParts, anno);
+  if (fullAnno.created !== anno.created) { throw new Error('Date anomaly'); }
   const ftrOpt = {
     type: 'annoLD',
   };
@@ -138,9 +139,10 @@ const EX = async function postNewAnno(srv, req) {
 
   const dbAddr = { versid: [Array, ctx.idParts.baseId, ctx.idParts.versNum] };
   const annoUserId = (who.userId || '');
+  Object.assign(ctx, { dbAddr, annoUserId });
   const dataRec = {
     ...dbAddr,
-    time_created: fullAnno.created,
+    time_created: anno.created,
     author_local_userid: annoUserId,
     details: prettyJson.sorted(anno),
   };
@@ -148,15 +150,8 @@ const EX = async function postNewAnno(srv, req) {
   // be accepted. We optimistically pre-generate the stamp and relation
   // records anyway, to catch potential errors therein before touching
   // the database.
-  const bareStamps = EX.decideBareStamps(ctx);
   const relRecs = fmtRelRecs({ srv, anno, ...ctx.idParts, tgtCateg });
-  const stampRecs = mapMergeDefaults({
-    ...dbAddr,
-    st_at: fullAnno.created,
-    st_by: annoUserId,
-    st_effts: null,
-    st_detail: null,
-  }, 'st_type', bareStamps);
+  const stampRecs = await decideStamps(ctx);
 
   const diagOpt = 'postNewAnnoDiagnoseAndRefuse';
   if (req.untrustedDebugOpt()[diagOpt]) {
@@ -214,23 +209,6 @@ Object.assign(EX, {
     }
     ctx.anySvcCfgFlag = flag => !!aclMetaSpy['nServicesWith:' + flag];
     // ^-- :TODO: Why does eslint allow this param reassignment?
-  },
-
-
-  decideBareStamps(ctx) {
-    const bs = [];
-    const mfi = miscMetaFieldInfos;
-    const needsApproval = ctx.anySvcCfgFlag('approvalRequired');
-    if (needsApproval) { bs.push(mfi.unapprovedStampName); }
-
-    const old = orf(ctx.oldAnnoDetails);
-    if (old[mfi.doiStampName]) {
-      if (ctx.anySvcCfgFlag('autoRequestNextVersionDoi')) {
-        bs.push(mfi.doiRequestStampName);
-      }
-    }
-
-    return bs;
   },
 
 
