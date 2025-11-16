@@ -1,48 +1,48 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 identity_sources:
-    # First successful identity source wins.
-    # They will be sorted by name, so we use a number prefix for priority.
-    # On our staging server, we just have Apache with shibboleth:
+  # First successful identity source wins.
+  # They will be sorted by name, so we use a number prefix for priority.
+  # On our staging server, we just have Apache with shibboleth:
 
-    60_apache:
-        method: 'headers'
-        # Header names can be given as a string or as a list.
-        # In case of a list, the first header with a non-empty
-        # value will be used.
-        # All header names are expected to be in all-lowercase.
-        userId:
-            - 'remote_user'
-        renewalAvailableBefore:
-            - 'shib-session-inactivity'
-        sessionExpiryHardLimit:
-            - 'shib-session-expires'
+  60_apache:
+    method: 'headers'
+    # Header names can be given as a string or as a list.
+    # In case of a list, the first header with a non-empty
+    # value will be used.
+    # All header names are expected to be in all-lowercase.
+    userId:
+      - 'remote_user'
+    renewalAvailableBefore:
+      - 'shib-session-inactivity'
+    sessionExpiryHardLimit:
+      - 'shib-session-expires'
 
-        loginExtraHeaders:
-            # The handler for /session/login can, on successful login,
-            # send custom extra response headers. This can be used to
-            # feed Apache's mod_session. Some special fields:
-            #   \vu = userId
-            #   \vt = timestamp (unix epoch seconds)
-            #   \vh = value of the received header of the same name.
-            # Make sure to use YAML double quotes for the \v.
-            'Replace-Session': "\vh&anno_user=\vu"
+    loginExtraHeaders:
+      # The handler for /session/login can, on successful login,
+      # send custom extra response headers. This can be used to
+      # feed Apache's mod_session. Some special fields:
+      #   \vu = userId
+      #   \vt = timestamp (unix epoch seconds)
+      #   \vh = value of the received header of the same name.
+      # Make sure to use YAML double quotes for the \v.
+      'Replace-Session': "\vh&anno_user=\vu"
 
 
 
 upstream_userid_transforms:
-    # The upstream reverse proxy may have overly complicated user IDs
-    # that you want to simplify for use in your user config files,
-    # or you might want use encoded versions of the user ID there.
-    # See `users/*.yaml` for examples.
+  # The upstream reverse proxy may have overly complicated user IDs
+  # that you want to simplify for use in your user config files,
+  # or you might want use encoded versions of the user ID there.
+  # See `users/*.yaml` for examples.
 
-    simplify:
-        -   replace_regexp: >
-                ^https://idp\.uni-heidelberg\.de!https://[\w\-]+\.ub\.uni-heidelberg\.de/[#-~]+!
-            # ^-- Shibboleth URLs on our staging server.
-            replace_with: 'staging:'
+  simplify:
+    - replace_regexp: >
+        ^https://idp\.uni-heidelberg\.de!https://[\w\-]+\.ub\.uni-heidelberg\.de/[#-~]+!
+      # ^-- Shibboleth URLs on our staging server.
+      replace_with: 'staging:'
 
 
 

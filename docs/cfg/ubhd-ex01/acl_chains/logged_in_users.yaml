@@ -1,13 +1,13 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 '^':
 
   - if:
-        memberOfAclGroup: 'suspended'
+      memberOfAclGroup: 'suspended'
     decide:
-        '*': deny
+      '*': deny
 
   # - unless:
   #       memberOfAclGroup: 'superadmin'
@@ -15,14 +15,14 @@
   #       shutdown: deny
 
   - if:
-        memberOfAclGroup: 'doi_sources'
+      memberOfAclGroup: 'doi_sources'
     decide:
-        stamp_any_add_dc_identifier: allow
+      stamp_any_add_dc_identifier: allow
 
   - if:
-        memberOfAclGroup: 'doi_request_watchers'
+      memberOfAclGroup: 'doi_request_watchers'
     decide:
-        search_hasStamp__ubhd_doiAssign: allow
+      search_hasStamp__ubhd_doiAssign: allow
 
   - if: always
     aclSubChain:
@@ -30,7 +30,7 @@
       - '?svcacl_<$serviceId>'
 
   - unless:
-        slotEmpty: 'serviceType'
+      slotEmpty: 'serviceType'
     aclSubChain:
       - '<$serviceType>_services'
 

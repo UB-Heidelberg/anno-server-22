@@ -1,11 +1,11 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
-    acl_user_groups:
-        - 'doi_request_watchers'
-        - 'doi_sources'
+  acl_user_groups:
+    - 'doi_request_watchers'
+    - 'doi_sources'
 
 
 ...

@@ -1,104 +1,104 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:  # <-- Anno user name. `^` means to use the basename of the filename.
-    # The user name will be visible to clients via the whoami API and
-    # possibly in other places.
+  # The user name will be visible to clients via the whoami API and
+  # possibly in other places.
 
-    author_identities:
-        # All identities should conform to the `Agent` model as described
-        # in https://www.w3.org/TR/annotation-model/#agents .
+  author_identities:
+    # All identities should conform to the `Agent` model as described
+    # in https://www.w3.org/TR/annotation-model/#agents .
 
-        'arno.nym@example.net':
-            # ^-- The [author ID key](author_id_keys.md). Rules apply!
-            name: 'Arno Nym'
-            type: Person
-            email: '^' # <-- special value: use the author ID key.
-            INHERITS:
-                # The `INHERITS` option can be used to include fragments
-                # from the `custom_data` config category.
-                - 'user_icon_fragments.wp_vector_anon'
-
-
-        'arno.minimal@as22-docs.example.net':
-            name: 'A. Nym'
-            type: Person
+    'arno.nym@example.net':
+      # ^-- The [author ID key](author_id_keys.md). Rules apply!
+      name: 'Arno Nym'
+      type: Person
+      email: '^' # <-- special value: use the author ID key.
+      INHERITS:
+        # The `INHERITS` option can be used to include fragments
+        # from the `custom_data` config category.
+        - 'user_icon_fragments.wp_vector_anon'
 
 
-        'doi_bot_test@as22-docs.example.net':
-            name: 'Josiah S. Carberry'
-            type: Person
-            email: 'jscarberry@example.net'
-            homepage:
-              - 'https://library.brown.edu/info/hay/carberry/'
-              - '@context': 'http://schema.org/'
-                '@type': 'Webpage'
-                url:  'https://ror.org/05gq02987'
-                name: 'Brown University'
-                description: 'Example for how to convey ROR affiliation to our DOI bot.'
-
-            # ORCID URL can be given either as `homepage` or `iana:alternate`:
-            'iana:alternate':
-              - 'https://orcid.org/0000-0002-1825-0097'
+    'arno.minimal@as22-docs.example.net':
+      name: 'A. Nym'
+      type: Person
 
 
-        'urn:uuid:6a98d57d-084d-425a-abce-396606cdfed7':
-            name: 'UUID URN example'
-            type: Person
+    'doi_bot_test@as22-docs.example.net':
+      name: 'Josiah S. Carberry'
+      type: Person
+      email: 'jscarberry@example.net'
+      homepage:
+        - 'https://library.brown.edu/info/hay/carberry/'
+        - '@context': 'http://schema.org/'
+          '@type': 'Webpage'
+          url:  'https://ror.org/05gq02987'
+          name: 'Brown University'
+          description: 'Example for how to convey ROR affiliation to our DOI bot.'
+
+      # ORCID URL can be given either as `homepage` or `iana:alternate`:
+      'iana:alternate':
+        - 'https://orcid.org/0000-0002-1825-0097'
 
 
-        '142a18b7-4e78-4f52-8fa2-07f63caeb942':
-            # Using a raw UUID here can be confusing because the server will
-            # construct an identity URL using the raw UUID and will then
-            # calculate a UUIDv5 URN based on the constructed URL, resulting
-            # in a new UUID that will usually be totally different.
-            name: 'Raw UUID example'
-            type: Person
+    'urn:uuid:6a98d57d-084d-425a-abce-396606cdfed7':
+        name: 'UUID URN example'
+        type: Person
 
 
-    acl_user_groups:
-        - 'svc_anno-frontend-tests/author'
-        - 'svc_diglit/author'
-        - 'svc_diglit/moderator'
-        - 'svc_diglit/publisher'
-        - 'svc_journals/author'
-        - 'svc_journals/publisher'
-
-        - 'doi_sources'
-
-        # You can also declare group membership in a group config file.
-        # Membership declarations merge cumulatively, so this is redundant:
-        - 'doi_request_watchers'
+    '142a18b7-4e78-4f52-8fa2-07f63caeb942':
+        # Using a raw UUID here can be confusing because the server will
+        # construct an identity URL using the raw UUID and will then
+        # calculate a UUIDv5 URN based on the constructed URL, resulting
+        # in a new UUID that will usually be totally different.
+        name: 'Raw UUID example'
+        type: Person
 
 
-    upstream_userid_aliases:
-        # The upstream reverse proxy may know this user under a name that's
-        # more complicated (e.h. Shibboleth) or might change in the future.
-        # This mapping translates the names from the identity provider (IDP)
-        # to names that make sense to the anno server admin.
-        #
-        # All below identities map to anno user "arno", because "arno" is the
-        # base name component of the filename of this user config file.
+  acl_user_groups:
+    - 'svc_anno-frontend-tests/author'
+    - 'svc_diglit/author'
+    - 'svc_diglit/moderator'
+    - 'svc_diglit/publisher'
+    - 'svc_journals/author'
+    - 'svc_journals/publisher'
 
-        # ====================================================================
+    - 'doi_sources'
 
-        # IDP dummy email -> anno user
-        - id: 'xyz12  345 @ example.net'
-        - id: 'xyz12  c   @ example.net'
-        - id: 'arno   22  @ example.net'
-        - id: 'arno   nym @ example.net'
-        # We can nicely align them with spaces because all whitespace is
-        # removed from the id value for your convenience.
-        # If your upstream IDP uses usernames with whitespace in them,
-        # please file a feature request for URL encoded IDs and we'll
-        # most likely add that.
+    # You can also declare group membership in a group config file.
+    # Membership declarations merge cumulatively, so this is redundant:
+    - 'doi_request_watchers'
 
-        # ====================================================================
 
-        # Simplified according to `../identity_providers.yaml`
-        - id: 'staging:7DPZFWSX2ULQKYNK7UAA2LJNDF2DPREZ'    # digi-test
-        - id: 'staging:V4B7UOXG77RIRCH4LSD2LMKPA3MA7SWS'    # hc42
+  upstream_userid_aliases:
+    # The upstream reverse proxy may know this user under a name that's
+    # more complicated (e.h. Shibboleth) or might change in the future.
+    # This mapping translates the names from the identity provider (IDP)
+    # to names that make sense to the anno server admin.
+    #
+    # All below identities map to anno user "arno", because "arno" is the
+    # base name component of the filename of this user config file.
+
+    # ====================================================================
+
+    # IDP dummy email -> anno user
+    - id: 'xyz12  345 @ example.net'
+    - id: 'xyz12  c   @ example.net'
+    - id: 'arno   22  @ example.net'
+    - id: 'arno   nym @ example.net'
+    # We can nicely align them with spaces because all whitespace is
+    # removed from the id value for your convenience.
+    # If your upstream IDP uses usernames with whitespace in them,
+    # please file a feature request for URL encoded IDs and we'll
+    # most likely add that.
+
+    # ====================================================================
+
+    # Simplified according to `../identity_providers.yaml`
+    - id: 'staging:7DPZFWSX2ULQKYNK7UAA2LJNDF2DPREZ'    # digi-test
+    - id: 'staging:V4B7UOXG77RIRCH4LSD2LMKPA3MA7SWS'    # hc42
 
 
 

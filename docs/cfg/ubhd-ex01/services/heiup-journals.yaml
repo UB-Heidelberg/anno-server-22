@@ -1,14 +1,14 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
-    INHERITS: 'svctpl.journals-like'
+  INHERITS: 'svctpl.journals-like'
 
-    targetUrlMetadata:
-        prefixes:
-          - 'https://heiup.uni-heidelberg.de/journals/'
-          # … apocalyptica/issue/view/2448
+  targetUrlMetadata:
+    prefixes:
+      - 'https://heiup.uni-heidelberg.de/journals/'
+      # … apocalyptica/issue/view/2448
 
 
 ...

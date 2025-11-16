@@ -1,14 +1,14 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
-    INHERITS: 'svctpl.diglit-like'
+  INHERITS: 'svctpl.diglit-like'
 
-    targetUrlMetadata:
-        prefixes:
-          - 'https://archivum-laureshamense-digital.de/view/'
-          # Example annotations: a10a4cf67a aea8699a8e ef5d92d228 fb25d8d0a6
+  targetUrlMetadata:
+    prefixes:
+      - 'https://archivum-laureshamense-digital.de/view/'
+      # Example annotations: a10a4cf67a aea8699a8e ef5d92d228 fb25d8d0a6
 
 
 ...

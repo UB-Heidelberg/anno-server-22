@@ -1,5 +1,5 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
@@ -7,7 +7,7 @@
 
   - if: always
     decide:
-        shutdown: allow
-        '*': deny
+      shutdown: allow
+      '*': deny
 
 ...

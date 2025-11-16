@@ -1,19 +1,19 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^_author:
   - if: always
     tendency:
-        create:                 allow
-        create_across_services: allow
-        reply:                  allow
-        revise_own:             allow
-        revise_own_creator:     allow
-        revise_own_body:        allow
-        revise_own_rights:      allow
-        revise_own_target_add:  allow
-        revise_own_target_del:  allow
+      create:                 allow
+      create_across_services: allow
+      reply:                  allow
+      revise_own:             allow
+      revise_own_creator:     allow
+      revise_own_body:        allow
+      revise_own_rights:      allow
+      revise_own_target_add:  allow
+      revise_own_target_del:  allow
 
 
 # ========================================================================
@@ -22,27 +22,27 @@
 ^_moderator:
   - if: always
     tendency:
-        stamp_any_add_dc_dateAccepted:      allow
-        stamp_any_add_as_deleted:           allow
+      stamp_any_add_dc_dateAccepted:      allow
+      stamp_any_add_as_deleted:           allow
 
-        revise_any:             allow
-        revise_any_creator:     allow
+      revise_any:             allow
+      revise_any_creator:     allow
 
-        # !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !!
-        #
-        # ATTN: Editing other authors' annotations may have license
-        # implications. Make sure you have permission and you deal with
-        # authorship declaration in a way that the annotation's license
-        # allows. Some licenses require that the author of the original
-        # work is preserved, but other licenses require that any
-        # derivative work does not claim to be from the original author.
-        #
-        # !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !!
+      # !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !!
+      #
+      # ATTN: Editing other authors' annotations may have license
+      # implications. Make sure you have permission and you deal with
+      # authorship declaration in a way that the annotation's license
+      # allows. Some licenses require that the author of the original
+      # work is preserved, but other licenses require that any
+      # derivative work does not claim to be from the original author.
+      #
+      # !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !! !!
 
-        revise_any_body:        allow
-        revise_any_rights:      allow
-        revise_any_target_add:  allow
-        revise_any_target_del:  allow
+      revise_any_body:        allow
+      revise_any_rights:      allow
+      revise_any_target_add:  allow
+      revise_any_target_del:  allow
 
 
 # ========================================================================
@@ -51,7 +51,7 @@
 ^_publisher:
   - if: always
     tendency:
-        stamp_any_add__ubhd_doiAssign:      allow
+      stamp_any_add__ubhd_doiAssign:      allow
 
 
 # ========================================================================

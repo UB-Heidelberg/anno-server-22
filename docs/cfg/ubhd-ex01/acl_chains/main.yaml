@@ -1,26 +1,26 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
 
   - if: always
     tendency:
-        '*': deny
-        # `tendency` sets tentative decisions for selected privileges,
-        # which can be overturned by later rules.
-        # `*` is the fallback privilege, used when the required privilege
-        # has no explicit decision.
-        # This entire rule is redundant, because the built-in default is
-        # to deny everything.
+      '*': deny
+      # `tendency` sets tentative decisions for selected privileges,
+      # which can be overturned by later rules.
+      # `*` is the fallback privilege, used when the required privilege
+      # has no explicit decision.
+      # This entire rule is redundant, because the built-in default is
+      # to deny everything.
 
-        lookupAnnoTargets: allow
-        # ^- Required pre-condition for "read" privilege.
+      lookupAnnoTargets: allow
+      # ^- Required pre-condition for "read" privilege.
 
-        discover: allow
-        # ^- Required to read version history
+      discover: allow
+      # ^- Required to read version history
 
-        read: allow
+      read: allow
 
 
   - if: isLoggedIn

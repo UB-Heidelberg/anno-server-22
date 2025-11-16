@@ -1,34 +1,34 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
-    INHERITS: 'svctpl.diglit-like'
+  INHERITS: 'svctpl.diglit-like'
 
-    targetUrlMetadata:
-        prefixes:
-          - 'https://digi.ub.uni-heidelberg.de/diglit/'
-          # ^-- Example annotation: 0b3c9340-11f7-3ec8-8721-09504062a007
-          - 'https://digi.ub.uni-heidelberg.de/diglit_protected/'
-          # ^-- Example annotation: UL9bSMsbQwu8rBaZO5HrqA
+  targetUrlMetadata:
+    prefixes:
+      - 'https://digi.ub.uni-heidelberg.de/diglit/'
+      # ^-- Example annotation: 0b3c9340-11f7-3ec8-8721-09504062a007
+      - 'https://digi.ub.uni-heidelberg.de/diglit_protected/'
+      # ^-- Example annotation: UL9bSMsbQwu8rBaZO5HrqA
 
-        prefixReverseHostnameAliases:
-            de:
-                uni-heidelberg:
-                    ub:
-                        '…*':
-                            serv: 'digi'
-                        digi-test: 'digi'
+    prefixReverseHostnameAliases:
+      de:
+        uni-heidelberg:
+          ub:
+            '…*':
+                serv: 'digi'
+            digi-test: 'digi'
 
 
 
-    rssFeeds:
+  rssFeeds:
 
-        team23: # <- The sub URL (inside /rssb) of this feed
-            INHERITS: 'svctpl.approvalFeed'
-            keyHash: '$2y$05$pumfI6EZRlq/Od5zPfjefOPYIwDDswZ0IzT409Ww6ekF7GrD8iTPm'
-            # Example plaintext token is: `xmUndc5rSLjp9a81FBbmWesgVwZobm1O`
-            # => URL will be /rssb/team23?key=xmUn…
+    team23: # <- The sub URL (inside /rssb) of this feed
+      INHERITS: 'svctpl.approvalFeed'
+      keyHash: '$2y$05$pumfI6EZRlq/Od5zPfjefOPYIwDDswZ0IzT409Ww6ekF7GrD8iTPm'
+      # Example plaintext token is: `xmUndc5rSLjp9a81FBbmWesgVwZobm1O`
+      # => URL will be /rssb/team23?key=xmUn…
 
 
 

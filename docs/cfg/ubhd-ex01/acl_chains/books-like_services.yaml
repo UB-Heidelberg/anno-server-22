@@ -1,20 +1,20 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
 
   - repeat:
-        type: staticMetadataForEach
-        slot: checkRole
-        list:
-          - author
-          - moderator
-          - publisher
+      type: staticMetadataForEach
+      slot: checkRole
+      list:
+        - author
+        - moderator
+        - publisher
     if:
-        memberOfAclGroup:
-          - 'svc_<$serviceId>/<$checkRole>'
-          - 'svc_<$serviceId>/sub<$submissionId>/<$checkRole>'
+      memberOfAclGroup:
+        - 'svc_<$serviceId>/<$checkRole>'
+        - 'svc_<$serviceId>/sub<$submissionId>/<$checkRole>'
     aclSubChain: 'default_perms_<$checkRole>'
 
 

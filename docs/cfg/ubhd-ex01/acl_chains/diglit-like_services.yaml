@@ -1,5 +1,5 @@
 %YAML 1.2
-# -*- coding: UTF-8, tab-width: 4 -*-
+# -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
 ^:
@@ -12,25 +12,25 @@
         searchFor: '<$projectName>'
         public: true
         notFound:
-            sammlung: 'PROJEKT_OHNE_SAMMLUNG'
+          sammlung: 'PROJEKT_OHNE_SAMMLUNG'
 
   - repeat:
-        type: staticMetadataForEach
-        slot: checkRole
-        list:
-          - author
-          - moderator
-          - publisher
+      type: staticMetadataForEach
+      slot: checkRole
+      list:
+        - author
+        - moderator
+        - publisher
     if:
-        memberOfAclGroup:
-          - 'svc_<$serviceId>/<$checkRole>'
-          - 'svc_<$serviceId>/proj_<$projectName>/<$checkRole>'
-          - 'svc_<$serviceId>/proj_<$projectName>/pg<$pageNumStr>/<$checkRole>'
-          - 'svc_<$serviceId>/samm_<$sammlung>/<$checkRole>'
-          - 'svc_<$serviceId>/oai_<$gnt_oai_Gartenkunst>/<$checkRole>'
-          - 'svc_<$serviceId>/oai_<$gnt_oai_Karten>/<$checkRole>'
-          - 'svc_<$serviceId>/oai_<$gnt_oai_leo-bw>/<$checkRole>'
-          - 'svc_<$serviceId>/oai_<$gnt_oai_Zeitungen>/<$checkRole>'
+      memberOfAclGroup:
+        - 'svc_<$serviceId>/<$checkRole>'
+        - 'svc_<$serviceId>/proj_<$projectName>/<$checkRole>'
+        - 'svc_<$serviceId>/proj_<$projectName>/pg<$pageNumStr>/<$checkRole>'
+        - 'svc_<$serviceId>/samm_<$sammlung>/<$checkRole>'
+        - 'svc_<$serviceId>/oai_<$gnt_oai_Gartenkunst>/<$checkRole>'
+        - 'svc_<$serviceId>/oai_<$gnt_oai_Karten>/<$checkRole>'
+        - 'svc_<$serviceId>/oai_<$gnt_oai_leo-bw>/<$checkRole>'
+        - 'svc_<$serviceId>/oai_<$gnt_oai_Zeitungen>/<$checkRole>'
     sideEffects:
       # - :: debugDumpMeta
     aclSubChain: 'default_perms_<$checkRole>'
