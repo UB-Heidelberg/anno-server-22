@@ -55,7 +55,12 @@ const EX = {
     }
 
     const tum = orf(copy('targetUrlMetadata',
-      'dictObj' + (svcId ? '' : ' | undef')));
+      'dictObj' + (svcId ? '' : ' | undef | nul')));
+    if (tum.forbiddenStrings) {
+      const msg = ('The `forbiddenStrings` section was probably meant to be '
+        + 'part of the `scopeSubUrlRules` section.');
+      throw new Error(msg);
+    }
     const { prefixes } = tum;
     if (svcId) {
       arrayOfTruths(prefixes).forEach(pfx => svcs.idByPrefix.set(pfx, svcId));
