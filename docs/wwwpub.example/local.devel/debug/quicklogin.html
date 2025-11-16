@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>as22 Quick Login</title>
+  <meta name="viewport" content="width=device-width">
+  <style type="text/css">
+    label {
+      display: inline;
+    }
+    input[type=radio] { position: absolute; top: -200vh; left: -200vw; }
+    p {
+      display: inline-block; margin: 1em; padding: 0.2em 0.5em;
+      border: 1px solid grey; background: whitesmoke;
+    }
+    input[type=radio]:checked + p { background-color: palegreen; }
+    input[type=radio][value=""] + p:empty:before { content: "(—)"; }
+  </style>
+</head><body>
+<form action="nope://" method="get" name="quicklogin"></form>
+<script src="../debug.cfg/quicklogin.users.js"></script><!-- Example:
+window.quickLoginUsers = {
+  '': '(from login)',
+  'arno': '',
+  'bernd': '',
+}; -->
+<script src="quicklogin.js"></script>
+</body></html>
