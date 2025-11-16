@@ -16,6 +16,7 @@ const EX = async function decideStamps(ctx) {
     anno,
     annoUserId,
     anySvcCfgFlag,
+    approvalRequiredBy,
     dbAddr,
     oldAnnoDetails,
   } = ctx;
@@ -29,8 +30,10 @@ const EX = async function decideStamps(ctx) {
   });
 
   const mfi = miscMetaFieldInfos;
-  const needsApproval = anySvcCfgFlag('approvalRequired');
-  if (needsApproval) { stampRecs.add(mfi.unapprovedStampName); }
+  if (approvalRequiredBy) {
+    const det = JSON.stringify({ q: approvalRequiredBy });
+    stampRecs.add(mfi.unapprovedStampName, { st_detail: det });
+  }
 
   const old = orf(oldAnnoDetails);
   if (old[mfi.doiStampName]) {
