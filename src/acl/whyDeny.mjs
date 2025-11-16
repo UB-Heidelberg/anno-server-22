@@ -1,6 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
 import getOwn from 'getown';
+import loMapValues from 'lodash.mapvalues';
 import mustBe from 'typechecks-pmb/must-be.js';
 import sortedJson from 'safe-sortedjson';
 
@@ -80,6 +81,24 @@ const EX = async function whyDeny(req, actionMetaAndSpecials) {
     aclMetaSpy.allPrivilegesPreview = all;
     const byStu = aclMetaSpy.aclPreviewBySubjectTargetUrl;
     if (byStu) { byStu[targetUrl] = all; }
+
+    (function copyNoConflict() {
+      const optKey = 'copyUndisputedTruthyMetaDataFields';
+      const dest = aclMetaSpy[optKey];
+      if (!dest) { return; }
+      loMapValues(dest, function maybeCopy(old, key) {
+        const val = getOwn(allMeta, key);
+        if (!val) { return; }
+        if (val === old) { return; }
+        if (!old) {
+          dest[key] = val;
+          return;
+        }
+        const msg = (optKey + ': conflicting meta data values for field '
+          + key + ', caused by target with URL ' + targetUrl);
+        throw new Error(msg);
+      });
+    }());
   }
 
   if (decision === 'allow') {
