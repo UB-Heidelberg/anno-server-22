@@ -6,6 +6,7 @@ import isStr from 'is-string';
 import objPop from 'objpop';
 import sortedJson from 'safe-sortedjson';
 
+import categorizeTargets from '../categorizeTargets.mjs';
 import findLatest from '../idGet/findLatestVersionNumsForBaseId.mjs';
 import genericAnnoMeta from '../redundantGenericAnnoMeta.mjs';
 import httpErrors from '../../../httpErrors.mjs';
@@ -38,7 +39,7 @@ const oldAnnoReadOpts = {
 
 const EX = async function checkVersionModifications(ctx) {
   await EX.validateAnnoIdParts(ctx);
-  const { anno, idParts, req } = ctx;
+  const { anno, idParts } = ctx;
   if (!idParts.baseId) { return; }
   const lookup = await lookupExactVersion({ ...ctx, ...oldAnnoReadOpts });
   ctx.oldAnnoDetails = lookup.annoDetails;
@@ -49,7 +50,7 @@ const EX = async function checkVersionModifications(ctx) {
 
   // Pluck changes.
   ctx.annoChanges = EX.findAndPluckAllChanges(ctx.oldAnnoDetails, anno);
-  req.logCkp('postNewAnno anno diff:', ctx.annoChanges);
+  // ctx.req.logCkp('postNewAnno anno diff:', ctx.annoChanges);
   const nUpdates = Object.keys(ctx.annoChanges).length;
   if (nUpdates < 1) { throw badRequest('Found no modifications.'); }
   await EX.validateModificationPermissions(ctx);
@@ -240,15 +241,26 @@ Object.assign(EX, {
 
   async validateTargetModifications(ctx) {
     const diff = compareTargetLists(ctx.oldAnnoDetails, ctx.annoChanges);
+    const oldAnnoTgtCateg = categorizeTargets(ctx.srv, ctx.oldAnnoDetails,
+      { errInvalidAnno: badRequest });
+    const { newAnnoTgtCateg } = ctx;
     const permPrefix = ctx.postActionPrivName + '_';
 
-    function chkList(perm, list) {
+    function chkSubjTgtList(perm, tgtList, tgtCateg) {
+      const tgtUrls = tgtList.map(EX.guessSingleTargetUrl);
+      const subjTgts = tgtUrls.filter(function isSubjTgt(tgt) {
+        const url = (tgt.id || tgt);
+        if (tgtCateg.replyTgtUrls.includes(url)) { return false; }
+        if (tgtCateg.replyTgtVersIds.includes(url)) { return false; }
+        return true;
+      });
+      if (!subjTgts.length) { return; }
       return ctx.requirePermForSubjTgtUrls(permPrefix + perm,
-        { customUrlsList: list.map(EX.guessSingleTargetUrl) });
+        { customUrlsList: subjTgts });
     }
 
-    await chkList('target_del', diff.removed);
-    await chkList('target_add', diff.added);
+    await chkSubjTgtList('target_del', diff.removed, oldAnnoTgtCateg);
+    await chkSubjTgtList('target_add', diff.added, newAnnoTgtCateg);
 
     /*  Re-ordering currently doesn't matter because we only allow one
         subject target anyway. Once we decide to check it, we need to

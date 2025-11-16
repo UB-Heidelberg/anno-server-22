@@ -53,7 +53,8 @@ const EX = {
     const svcFromPrefix = svcs.findServiceByTargetUrl(tgtUrl);
     if (!svcFromPrefix) {
       const msg = 'No service configured for target URL: ' + tgtUrl;
-      throw httpErrors.aclDeny.throwable(msg);
+      const err = httpErrors.aclDeny.throwable(msg);
+      throw err;
     }
     const { svcId, pfx } = svcFromPrefix;
     const svcInfo = svcFromPrefix.svc;

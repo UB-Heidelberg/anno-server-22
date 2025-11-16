@@ -54,8 +54,9 @@ const EX = function categorizeTargets(srv, anno, opt) {
   if (!subjTgtUrls.length) { throw new Error('Found no subject target'); }
 
   const report = {
-    subjTgtUrls,
+    replyTgtUrls,
     replyTgtVersIds,
+    subjTgtUrls,
   };
   return report;
 };

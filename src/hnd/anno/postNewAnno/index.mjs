@@ -54,14 +54,15 @@ const EX = async function postNewAnno(srv, req) {
   const tgtCateg = categorizeTargets(srv, anno,
     { errInvalidAnno: badRequest });
   const {
-    subjTgtUrls,
     replyTgtVersIds,
+    subjTgtUrls,
   } = tgtCateg;
 
   const who = await detectUserIdentity.andDetails(req);
   const ctx = {
     anno,
     idParts: { baseId: '', versNum: 1 },
+    newAnnoTgtCateg: tgtCateg,
     req,
     srv,
     who,
