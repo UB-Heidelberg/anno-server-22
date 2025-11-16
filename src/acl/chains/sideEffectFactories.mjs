@@ -36,6 +36,7 @@ const EX = {
     return function setMetaFromCustomDataDict(chainCtx) {
       const key = searchFor(chainCtx);
       const data = getOwn(dict, key, notFound);
+      if (data === undefined) { return; }
       const { allMeta, pubMeta } = chainCtx;
       if (setSlot === null) {
         Object.assign(allMeta, data);
