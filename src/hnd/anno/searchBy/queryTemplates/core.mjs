@@ -14,7 +14,8 @@ const EX = {
         da.time_created, da.author_local_userid,
         #visibilityStampCols
       FROM criteria_filter AS cf NATURAL JOIN anno_data_splat AS da
-      #visibilityStampJoins ),
+      #visibilityStampJoins
+      WHERE #forApprovalByCond ),
     data_and_visibility AS (SELECT *,
       \r (sunset_uts = 0 OR sunset_uts > #nowUts) AS sunny\r
       \r FROM visibility_prep )
@@ -31,6 +32,8 @@ const EX = {
 
   inquiryAllWithStamp: ('versid'
     + ' FROM anno_stamps WHERE st_type = $searchStampName'),
+
+  forApprovalByCond: 'TRUE',
 
 };
 
