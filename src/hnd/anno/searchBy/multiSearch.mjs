@@ -38,7 +38,6 @@ const EX = async function multiSearch(ctx) {
   const { srv, req } = ctx;
   const {
     latestVersionOnly,
-    overrideSearchTmpl,
     reviverOpts: customReviverOpts,
     searchAllWithStamp,
     searchBaseId,
@@ -161,7 +160,8 @@ const EX = async function multiSearch(ctx) {
   if (contentMode.wrap) { search.wrapSeed(contentMode.wrap); }
   if (!contentMode.hasSubjs) { search.wrapSeed('addSubjectTargetRelUrls'); }
 
-  search.tmpl(overrideSearchTmpl);
+  search.data(ctx.overrideSearchData);
+  search.tmpl(ctx.overrideSearchTmpl);
 
   popUntrustedOpt.expectEmpty();
 

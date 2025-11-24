@@ -10,6 +10,8 @@ import defaultTemplates from './queryTemplates/index.mjs';
 
 function ifUndef(x, d) { return (x === undefined ? d : x); }
 
+const errKeyNeSt = 'Key must be a non-empty string, not ';
+
 
 const EX = {
 
@@ -39,8 +41,10 @@ const EX = {
 
 
 function smartAssign(d, k, v) {
+  if ((!k) && (v === undefined)) { return; }
   const t = k && typeof k;
   if (t === 'object') { return Object.assign(d, k); }
+  if (t !== 'string') { throw new TypeError(errKeyNeSt + t + ' ' + k); }
   d[k] = v; // eslint-disable-line no-param-reassign
   return d;
 }
