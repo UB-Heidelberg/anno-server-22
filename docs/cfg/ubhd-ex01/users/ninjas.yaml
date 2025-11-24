@@ -1,0 +1,13 @@
+%YAML 1.2
+# -*- coding: UTF-8, tab-width: 2 -*-
+---
+
+^:
+
+# The ninjas live in secret, so no author identities are known, and nothing
+# else either. The only info they'll see in their whoami response is that
+# we properly respect them as ninjas.
+
+
+
+...
