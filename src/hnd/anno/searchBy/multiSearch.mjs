@@ -127,7 +127,7 @@ const EX = async function multiSearch(ctx) {
     userId = ores((await detectUserIdentity.andDetails(req)).userId);
     search.tmpl('visibilityWhere', '#visibilityAuthorMode');
     search.data('rqUserId', userId);
-    annoReviverOpts.lowlineStamps = {};
+    annoReviverOpts.includeLowlineStamps = true;
   }
 
   if (!validRole) { throw noSuchResource('Unsupported role name'); }
@@ -271,7 +271,13 @@ Object.assign(EX, {
       '(unquoted-base-id,1)', so we'd need to actually parse it to use that.
       Fortunately, we've already extracted its parts into separate columns. */
 
-    const { lowlineStamps } = opts;
+    if (opts.lowlineStamps) {
+      /* Old code reused a common object for the lowlineStamps, which may or
+        may not have leaked stamps from earlier results into later results.
+        To avoid that, the new approach is to set includeLowlineStamps. */
+      throw new Error('Unexpected anno reviver option: lowlineStamps');
+    }
+    const lowlineStamps = (opts.includeLowlineStamps ? {} : false);
     const stamps = parseStampRows(rec.stamps, { lowlineStamps });
     // console.debug('rec:', rec, 'stamps:', stampInfos);
     let fullAnno = {
