@@ -1,7 +1,7 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
+import fmtColl from '../anno/searchBy/fmtColl.mjs';
 import multiSearch from '../anno/searchBy/multiSearch.mjs';
-import fmtAnnosAsRssFeed from '../anno/fmtAnnosAsRssFeed.mjs';
 
 
 const EX = async function latestAnnosFeed(how) {
@@ -13,25 +13,21 @@ const EX = async function latestAnnosFeed(how) {
     req,
     srv,
     staticMeta,
+    untrustedOpt,
   } = how;
+
   const found = await multiSearch({
     srv,
     req,
-    rowsLimit: (+how.rowsLimit || fmtAnnosAsRssFeed.defaultMaxItems),
     subjTgtSpec: prefix + (req.query.subj || '*'),
     overrideSearchTmpl,
     latestVersionOnly: true,
     readContent: 'justTitles',
+    outFmt: 'rss',
+    untrustedOpt,
   });
-  const annos = found.toFullAnnos();
-  if (staticMeta) { annos.meta = { ...annos.meta, ...staticMeta }; }
-  return fmtAnnosAsRssFeed({
-    annos,
-    feedTitle,
-    linkTpl,
-    req,
-    srv,
-  });
+  if (staticMeta) { Object.assign(found.meta, staticMeta); }
+  return fmtColl({ req, srv, feedTitle, linkTpl }, found);
 };
 
 

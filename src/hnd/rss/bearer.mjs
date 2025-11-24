@@ -5,7 +5,9 @@
 
 
 import bcrypt from 'bcryptjs';
+import mapValues from 'lodash.mapvalues';
 import mustLookupProp from 'must-lookup-prop-in-dict-pmb';
+import objPop from 'objpop';
 
 import httpErrors from '../../httpErrors.mjs';
 
@@ -16,9 +18,6 @@ const {
   genericDeny,
   noSuchResource,
 } = httpErrors.throwable;
-
-
-function orf(x) { return x || false; }
 
 
 const EX = async function makeBearerRssHandler(srv) {
@@ -35,10 +34,21 @@ const EX = async function makeBearerRssHandler(srv) {
     // ^- Check for config error before checking key: Allows for automated
     //    health checks without having to provide the key.
 
-    const keyGiven = orf(req.query).key;
-    await EX.verifyFeedKey(feedCfg, keyGiven);
-    if (!req.query) { throw new Error('Survived verifyFeedKey w/o query?!'); }
-    return typeImpl({ ...feedCfg, srv, req });
+    const untrustedOpt = { ...req.query };
+    const popUntrustedOpt = objPop.d(untrustedOpt, {
+      leftoversErrCls: noSuchResource,
+      leftoversMsg: 'Unsupported criterion qualifier',
+    });
+    await EX.verifyFeedKey(feedCfg, popUntrustedOpt('key'));
+    mapValues(untrustedOpt, (v, k) => (v || delete untrustedOpt[k]));
+    const feedCtx = {
+      ...feedCfg,
+      req,
+      srv,
+      popUntrustedOpt,
+      untrustedOpt,
+    };
+    return typeImpl(feedCtx);
   };
 
   return hnd;
