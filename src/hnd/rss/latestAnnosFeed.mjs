@@ -8,6 +8,7 @@ const EX = async function latestAnnosFeed(how) {
   const {
     feedTitle,
     linkTpl,
+    overrideSearchData,
     overrideSearchTmpl,
     prefix,
     req,
@@ -20,6 +21,7 @@ const EX = async function latestAnnosFeed(how) {
     srv,
     req,
     subjTgtSpec: prefix + (req.query.subj || '*'),
+    overrideSearchData,
     overrideSearchTmpl,
     latestVersionOnly: true,
     readContent: 'justTitles',
