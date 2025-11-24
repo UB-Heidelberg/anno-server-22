@@ -11,6 +11,7 @@ import objPop from 'objpop';
 
 import httpErrors from '../../httpErrors.mjs';
 
+import approvalFeedHnd from './approvalFeed.mjs';
 import latestFeedHnd from './latestAnnosFeed.mjs';
 
 
@@ -77,14 +78,8 @@ EX.keyAlgos = {
 
 
 EX.feedTypes = {
+  approval: approvalFeedHnd,
   latest: latestFeedHnd,
-
-  approval: latestFeedHnd.withForcedPresets({
-    overrideSearchTmpl: {
-      visibilityWhere: '#visibilityUndecided',
-      orderByTimeDirection: 'ASC', // first come = first served
-    },
-  }),
 };
 
 
