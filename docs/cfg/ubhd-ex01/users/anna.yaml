@@ -1,0 +1,39 @@
+%YAML 1.2
+# -*- coding: UTF-8, tab-width: 2 -*-
+---
+
+^:  # See arno.yaml for explanations.
+
+  author_identities:
+    'anna.tarzonia@example.net':
+      name: 'Anna Tarzonia'
+      type: Person
+      email: '^'
+
+    'anna@example.net':
+      name: 'Anna'
+      type: Person
+
+
+  acl_user_groups:
+    - 'svc_diglit/author'
+    - 'svc_diglit/publisher'
+
+
+  upstream_userid_aliases:
+    - id: 'staging:X6UMNACY3DWWDDHDG5MUPZFI6E47A343'    # hc42 S.H.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...

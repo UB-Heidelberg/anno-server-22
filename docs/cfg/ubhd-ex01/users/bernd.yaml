@@ -2,10 +2,19 @@
 # -*- coding: UTF-8, tab-width: 2 -*-
 ---
 
-# This config exists for verifying that a user will be accepted even without
-# any custom properties and will be served proper whoami information.
+^:  # See arno.yaml for explanations.
 
-^:
+  author_identities:
+    'bernd.b@example.net':
+      name: 'Bernd B.'
+      type: Person
+      email: '^'
+
+
+  acl_user_groups:
+    - 'svc_anno-frontend-tests/author'
+    - 'svc_diglit/author'
+    - 'svc_journals/author'
 
 
 ...
