@@ -14,6 +14,26 @@
         notFound:
           sammlung: 'PROJEKT_OHNE_SAMMLUNG'
 
+      - :: setMetaFromCustomDataDict
+        setSlot: 'approvalRequiredBy'
+        # debugTrace: 'approvalRequiredBy'
+        dict: 'diglit_moderierte_bereiche'
+        searchFor:
+          # First match wins, so the most specific criterion should be atop.
+          - 'proj=<$projectName>'
+          - 'samm=<$sammlung>'
+          - 'oai=<$gnt_oai_German_Sales>'
+          - 'oai=<$gnt_oai_Welscher_Gast>'
+
+      - :: setMetaFromCustomDataDict
+        setSlot: 'approvalRequiredBy'
+        # debugTrace: 'approvalRequiredBy'
+        dict: 'diglit_moderierte_bereiche'
+        searchFor:
+          # Now we can override the queue for specific users:
+          - 'queue=<$approvalRequiredBy>,user=<$userId>'
+          - 'queue=<$approvalRequiredBy>,user=*'
+
   - repeat:
       type: staticMetadataForEach
       slot: checkRole

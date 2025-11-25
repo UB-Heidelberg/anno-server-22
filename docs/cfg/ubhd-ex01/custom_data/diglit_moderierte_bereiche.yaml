@@ -1,0 +1,24 @@
+%YAML 1.2
+# -*- coding: UTF-8, tab-width: 2 -*-
+---
+
+^:
+  'samm=20':    'kunst'
+  'queue=kunst,user=':      'kunst-gaeste'  # shouldn't ever happen
+  'queue=kunst,user=*':     'kunst-normalos'
+  'queue=kunst,user=arno':  'kunst-arno'    # Extrawurst
+  'queue=kunst,user=anna':  ''
+
+
+
+  'oai=Welscher_Gast':  'wgd'
+
+
+
+  'queue=,user=bernd':  'betreut'
+
+
+
+
+
+...

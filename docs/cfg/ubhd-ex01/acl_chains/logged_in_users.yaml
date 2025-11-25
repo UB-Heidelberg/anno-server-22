@@ -26,8 +26,9 @@
 
   - if: always
     aclSubChain:
-      - '?useracl_<$userId>'
       - '?svcacl_<$serviceId>'
+      - '?useracl_<$userId>'
+      # The sammlung isn't looked up yet. That's later in diglit-like_services.
 
   - unless:
       slotEmpty: 'serviceType'

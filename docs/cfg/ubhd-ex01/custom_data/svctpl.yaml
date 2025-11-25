@@ -7,7 +7,6 @@
 
   approvalFeed:
     type: 'approval'
-    feedTitle: 'Annos waiting for approval' # optional
 
     linkTpl: '/static/local/redir/approve-anno.html?svc=%sv&anno=%as'
     # Many RSS readers require an absolute URL. Our RSS formatter

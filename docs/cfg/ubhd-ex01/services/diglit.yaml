@@ -21,14 +21,36 @@
             digi-test: 'digi'
 
 
+  # staticAclMeta:
+    # approvalRequiredBy: 'digi-other'
+    # ^- If set, it should be a string. If truthy (i.e. the string is
+    # not empty), new annotations are held until approved.
+    # By overwriting this setting in ACL chains, you can set up independent
+    # approval queues within one service (see `rssFeeds.*.forApprovalBy`).
+
 
   rssFeeds:
 
-    team23: # <- The sub URL (inside /rssb) of this feed
+    approval_all: # <- The sub URL (inside /rssb) of this feed
       INHERITS: 'svctpl.approvalFeed'
       keyHash: '$2y$05$pumfI6EZRlq/Od5zPfjefOPYIwDDswZ0IzT409Ww6ekF7GrD8iTPm'
       # Example plaintext token is: `xmUndc5rSLjp9a81FBbmWesgVwZobm1O`
-      # => URL will be /rssb/team23?key=xmUn…
+      # => URL will be /rssb/approval_all?key=xmUn…
+
+    approval_kunst:
+      INHERITS: 'svctpl.approvalFeed'
+      keyHash: '$2y$05$XmLys6uTlGTYDWiwmbLp6..UdATcpcNTv9cDxUGM4FPzxecE9pEDW'
+      # ?key=RgHWYTjVfq1i8W-bRzopGqQ-UgPZNNY7SVJyi8St&forApprovalBy=kunst-normalos
+      forApprovalByRegExp: '^kunst-'
+
+    approval_misc:
+      INHERITS: 'svctpl.approvalFeed'
+      keyHash: '$2y$05$le7B1LuY.rvb0Kms/M.Nyu2xRufEU7feOuDUDrXrdsycsVgnKjLcC'
+      # ?key=i-MKEtds6Ej0Xtm9g4ThrBGxYWLB14rUwP9jGDqv&forApprovalBy=wgd
+      forApprovalByRegExp: '^(betreut|wgd)$'
+
+
+
 
 
 
