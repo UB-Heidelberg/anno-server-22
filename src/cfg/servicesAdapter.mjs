@@ -18,6 +18,16 @@ const essentialMandatoryBool = 'bool'; /*
   we force users to make an explicit choice, so that we are able to detect
   when their config decision got lost by accident. */
 
+const optionalDictObjRule = 'dictObj | undef'; /*
+  Unfortunately we cannot allow `null`, because that would hide the dict
+  that we may have wanted to inherit via the `INHERITS` directive.
+  The loss would occurr before `learnOneService()` is even invoked, so any
+  workaround there would have to partially repeat the entire `INHERITS`.
+  Which is impractical, so unfortunately, you'll have to live with either
+  a dummy entry in your dictionary, or useless diff noise because you'll
+  have to also comment-out the name of the dictionary whenever it would
+  otherwise become `null`. */
+
 
 const EX = {
 
@@ -72,11 +82,11 @@ const EX = {
     lazyMergeTruthyPropInplace(svcs, 'prefixReverseHostnameAliases', tum);
 
     EX.learnRssFeeds(ctx, svcId, prefixes,
-      copy('rssFeeds', 'dictObj | nul | undef'));
+      copy('rssFeeds', optionalDictObjRule));
     copy('annoBrowserRedirect', 'str | nul | undef');
     copy('approvalRequired', 'bool | nul | undef');
     copy('autoRequestNextVersionDoi', essentialMandatoryBool);
-    copy('staticAclMeta', 'dictObj | nul | undef');
+    copy('staticAclMeta', optionalDictObjRule);
 
     mustPopDetail.expectEmpty('Unsupported leftover service config keys');
     return det;
