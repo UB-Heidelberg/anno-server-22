@@ -7,6 +7,7 @@ import sendFinalTextResponse from '../../../finalTextResponse.mjs';
 import fmtAnnoCollection from '../fmtAnnosAsSinglePageCollection.mjs';
 import fmtAnnosAsIiif3 from '../fmtAnnosAsIiif3.mjs';
 import fmtAnnosAsRssFeed from '../fmtAnnosAsRssFeed.mjs';
+import fmtAnnosAsTitlesByScope from '../fmtAnnosAsTitlesByScope.mjs';
 
 
 const outFmtUnsupported = httpErrors.notImpl.explain(
@@ -58,6 +59,7 @@ Object.assign(EX, {
     count: fmtAnnoCollection.replyToRequest,
     iiif3: fmtAnnosAsIiif3.replyToRequest,
     rss(how) { return fmtAnnosAsRssFeed({ ...EX.defaultRssOpt, ...how }); },
+    titlesByScope: fmtAnnosAsTitlesByScope.replyToRequest,
   },
 
 
