@@ -66,7 +66,11 @@ function dinst_dockerize () {
     )Local time now: $(printf '%(%F %T)T' -1)"
   case "$DK_TASK" in
     install )
-      grep -HnPie '\b(?!0 )\d+ vulnerabilit' -- "$NPM_AUDIT_LOG" || true
+      grep -HnPie '\b(?!0 )\d+ vulnerabilit' -- "$NPM_AUDIT_LOG" &&
+        echo H: 'Try if some vulnerabilities can be solved by' \
+          'repeating this install step.' \
+          '(It usually settles within 4 attempts.)' \
+          || true
       ;;
   esac
 }
