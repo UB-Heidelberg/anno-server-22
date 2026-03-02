@@ -102,7 +102,7 @@
 
     # ====================================================================
 
-    # Simplified according to `../identity_providers.yaml`
+    # Simplified according to `../identity_providers/staging_server.yaml`
     - id: 'staging:7DPZFWSX2ULQKYNK7UAA2LJNDF2DPREZ'    # digi-test
     - id: 'staging:V4B7UOXG77RIRCH4LSD2LMKPA3MA7SWS'    # hc42
 
