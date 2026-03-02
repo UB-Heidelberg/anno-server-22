@@ -65,6 +65,7 @@ const EX = {
         + '", expected ' + JSON.stringify(want));
       throw new Error(msg);
     });
+    pop('undef | str | obj', 'iana:alternate');
   },
 
 };

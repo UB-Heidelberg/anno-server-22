@@ -29,24 +29,28 @@ const EX = async function serveExactVersion(ctx) {
   if (req.method === 'HEAD') { return sendFinalTextResponse(req, '', ftrOpt); }
   if (req.method !== 'GET') { throw methodNotAllowed(); }
 
-  const earlyFields = {};
-  if (clientPrefersHtml(req) || debugOpt.yesredir) {
-    const redirUrl = browserRedirect.fmtUrl(found, ctx);
-    if (redirUrl) {
-      if (debugOpt.noredir) {
-        earlyFields['as22debug:would_redirect_to'] = redirUrl;
-      } else {
-        ftrOpt.redirTo = redirUrl; /*
-        We do not use req.res.redirect() because it would send a generic
-        HTML body with a fallback link to the redirect URL, whereas the
-        FTR redirTo allows us to still send the annotation data.
-        This way, annotations are still easy to debug in browsers that
-        support manual approval of redirects. */
-      }
+  const reply = genericAnnoMeta.add(srv, idParts, found.annoDetails);
+
+  const ianaAltn = [];
+  const htmlUrl = browserRedirect.fmtUrl(found, ctx);
+  if (htmlUrl) {
+    ianaAltn.push({ href: htmlUrl, mediaType: 'text/html' });
+    const redirToHtml = ((debugOpt.redirToHtml || clientPrefersHtml(req))
+      && (!debugOpt.noredir));
+    if (redirToHtml) {
+      ftrOpt.redirTo = htmlUrl; /*
+      We do not use req.res.redirect() because it would send a generic
+      HTML body with a fallback link to the redirect URL, whereas the
+      FTR redirTo allows us to still send the annotation data.
+      This way, annotations are still easy to debug in browsers that
+      support manual approval of redirects. */
     }
   }
-  const fullAnno = genericAnnoMeta.add(srv, idParts, found.annoDetails);
-  const reply = { ...earlyFields, ...fullAnno };
+  if (ianaAltn.length) {
+    reply['iana:alternate'] = ianaAltn.map(
+      a => ({ type: 'as:Link', rel: ['alternate'], ...a }));
+  }
+
   return sendFinalTextResponse.json(req, reply, ftrOpt);
 };
 
