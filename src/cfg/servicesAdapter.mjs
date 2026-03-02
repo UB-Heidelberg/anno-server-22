@@ -86,6 +86,7 @@ const EX = {
     copy('annoBrowserRedirect', 'str | nul | undef');
     copy('approvalRequired', 'bool | nul | undef');
     copy('autoRequestNextVersionDoi', essentialMandatoryBool);
+    copy('multiSubjAnnoBrowserRedirect', 'str | nul | undef');
     copy('staticAclMeta', optionalDictObjRule);
 
     mustPopDetail.expectEmpty('Unsupported leftover service config keys');

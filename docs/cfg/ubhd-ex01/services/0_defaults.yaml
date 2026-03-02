@@ -6,6 +6,9 @@
   annoBrowserRedirect: '%sc/%bi/image,info'
   # ^-- For available slots, see `src/hnd/anno/idGet/browserRedirect.mjs`
 
+  multiSubjAnnoBrowserRedirect: '%suanno/%vi'
+  # ^-- Redirect for multi-subject annos.
+
   autoRequestNextVersionDoi: true
   # ^- If enabled, when a revision is submitted for a version that has
   # a DOI, a DOI request is stamped onto the newly submitted version.

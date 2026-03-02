@@ -162,6 +162,10 @@ Object.assign(EX, {
       return orf(this.subjTgtUrlsForAclCheckRead)[0] || '';
     },
 
+    countSubjectTargets() {
+      return orf(this.subjTgtUrlsForAclCheckRead).length || 0;
+    },
+
     primarySubjectUrlMeta(req) {
       const cache = orf(req).aclMetaCache;
       if (!cache) { throw new Error('No cache on req'); }

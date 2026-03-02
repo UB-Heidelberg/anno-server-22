@@ -22,24 +22,38 @@ function slot(val) {
 
 const EX = {
 
+  defaultRedirectUrlTemplate: '%sc',
+  defaultMultiSubjRedirectUrlTemplate: '', // i.e. same as for single subject
+
   fmtUrl(found, ctx) {
     const urlPubMeta = found.primarySubjectUrlMeta(ctx.req).publicMeta;
     if (!urlPubMeta) {
       throw fubar('No public URL metadata for primary subject target');
     }
+
+    const anno = orf(found.annoDetails);
+    const multiSubj = (found.countSubjectTargets() >= 2);
+
     const svcId = urlPubMeta.serviceId;
     const svcCfg = svcId && ctx.srv.services.get(svcId);
     if (!svcCfg) {
       throw new Error('Failed to lookup service config for ' + svcId);
     }
-    let url = svcCfg.annoBrowserRedirect || '%sc';
+
+    const useMultiSubjUrlTemplate = (multiSubj && (
+      svcCfg.multiSubjAnnoBrowserRedirect
+      || EX.defaultMultiSubjRedirectUrlTemplate));
+    let url = (useMultiSubjUrlTemplate
+      || svcCfg.annoBrowserRedirect
+      || EX.defaultRedirectUrlTemplate);
+
     url = url.replace(/%sv/g, svcId);
+    url = url.replace(/%su/g, urlPubMeta.serviceUrlPrefix);
 
     url = url.replace(/%bi/g, ctx.idParts.baseId);
     url = url.replace(/%vi/g, ctx.idParts.versId);
     url = url.replace(/%vn/g, ctx.idParts.versNum);
 
-    const anno = orf(found.annoDetails);
     const subjUrl = found.primarySubjectTargetUrl();
     const scopes = makeDictList(anno.target).getEachOwnProp('scope');
     url = url.replace(/%sc/g, slot(scopes[0] || subjUrl));
