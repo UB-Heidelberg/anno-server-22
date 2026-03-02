@@ -21,18 +21,19 @@ const EX = async function serveExactVersion(ctx) {
   const ftrOpt = { type: 'annoLD', headers };
 
   const { accept } = req.headers;
+  const debugOpt = req.untrustedDebugOpt();
   const wantText = ((accept || '').startsWith('text/plain,')
-    || req.untrustedDebugOpt().text);
+    || debugOpt.text);
   if (wantText) { ftrOpt.type = 'plain'; }
 
   if (req.method === 'HEAD') { return sendFinalTextResponse(req, '', ftrOpt); }
   if (req.method !== 'GET') { throw methodNotAllowed(); }
 
   const earlyFields = {};
-  if (clientPrefersHtml(req) || req.untrustedDebugOpt().yesredir) {
+  if (clientPrefersHtml(req) || debugOpt.yesredir) {
     const redirUrl = browserRedirect.fmtUrl(found, ctx);
     if (redirUrl) {
-      if (req.untrustedDebugOpt().noredir) {
+      if (debugOpt.noredir) {
         earlyFields['as22debug:would_redirect_to'] = redirUrl;
       } else {
         ftrOpt.redirTo = redirUrl; /*
