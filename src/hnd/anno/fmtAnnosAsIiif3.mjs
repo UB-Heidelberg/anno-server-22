@@ -6,13 +6,15 @@ import mustBe from 'typechecks-pmb/must-be.js';
 import shapeToPath from 'svg-shape-to-path-pmb';
 import xmlAttrDict from 'xmlattrdict';
 
+import aclMetaCache from '../../acl/aclMetaCache.mjs';
 import httpErrors from '../../httpErrors.mjs';
 import plumb from '../util/miscPlumbing.mjs';
 import sendFinalTextResponse from '../../finalTextResponse.mjs';
 
 
 const errNoCanvasPattern = httpErrors.notImpl.explain(
-  'This service is not configured to support IIIF.').throwable;
+  'This service is not configured to support IIIF.'
+  + ' (Empty iiifCanvasIdPattern in meta data.)').throwable;
 const errSvgSelectorLacksDimension = httpErrors.fubar.explain(
   'The SVG selector for this annotation cannot be scaled to the target image'
   + ' size because it lacks required size information or uses an unsupported'
@@ -57,15 +59,19 @@ Object.assign(EX, {
     apostrophe. */
 
 
-  replyToRequest(how) {
+  async replyToRequest(how) {
     const { srv, req, annos, extraTopFields } = how;
     mustBe.ary('Annotations list', annos);
     const canonicalUrl = how.canonicalUrl || plumb.guessOrigReqUrl(srv, req);
     mustBe.nest('canonicalUrl', canonicalUrl);
 
     const annoListMeta = orf(annos.meta);
+    const { subjTgtSpec } = annoListMeta;
+    const subjTgtMeta = (await aclMetaCache.byTargetUrl(req, subjTgtSpec)
+    ).allMeta();
     const fmtCtx = {
-      ...EX.predictCanvasForMultiTargetAnno(annoListMeta, req.aclMetaCache),
+      subjTgtSpec,
+      ...EX.predictCanvasForMultiTargetAnno(annoListMeta, subjTgtMeta),
       logCkp: req.logCkp.bind(req),
       scaleTo: EX.decideTargetScaling(annoListMeta),
     };
@@ -82,17 +88,15 @@ Object.assign(EX, {
   },
 
 
-  predictCanvasForMultiTargetAnno(annoListMeta, aclMetaCache) {
+  predictCanvasForMultiTargetAnno(annoListMeta, subjTgtMeta) {
     /* Some viewers cannot understand multi-target annos: For example,
       when we feed Mirador an array of canvas IDs, it will add the anno
       to all those canvases' anno lists, but fails to render the rectangle.
       We thus have to simplify the IIIF target to point to only the one
       canvas that was searched for. */
-    const { subjTgtSpec } = annoListMeta;
-    const subjTgtMeta = aclMetaCache['tgtUrl:' + subjTgtSpec];
     const canvasId = EX.constructCanvasId(subjTgtMeta);
     if (!canvasId) { throw errNoCanvasPattern(); }
-    return { canvasId, subjTgtMeta, subjTgtSpec };
+    return { canvasId, subjTgtMeta };
   },
 
 
