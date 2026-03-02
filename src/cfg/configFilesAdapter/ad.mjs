@@ -1,8 +1,8 @@
 // -*- coding: utf-8, tab-width: 2 -*-
 
 import osLib from 'os';
+import pathLib from 'path';
 
-import absDir from 'absdir';
 import crObAss from 'create-object-and-assign';
 import makeExtendedOrderedMap from 'ordered-map-extended-pmb';
 import mustBe from 'typechecks-pmb/must-be.js';
@@ -12,7 +12,8 @@ import objPop from 'objpop';
 import coreApi from './coreApi.mjs';
 import readAsDict from './readAsDict.mjs';
 
-const pathInRepo = absDir(import.meta, '../../..');
+
+const initialWorkingDirectory = process.cwd();
 
 const hostname = (process.env.HOSTNAME
   || osLib.hostname()
@@ -25,15 +26,11 @@ const EX = {
 
   async make(how) {
     const { popCfg } = how;
-
-    await import(pathInRepo('package.json'));
-    // ^- Verify we have the correct relative paths, because I originally
-    //    forgot this adjustment when refactoring.
-
     const cfgDict = popCfg('obj', 'cfgfiles');
+    const cfgPop = objPop.d(cfgDict);
     const ad = crObAss(EX.api, {
       cfgDict,
-      cfgDir: cfgDict.dir,
+      cfgDir: cfgPop('dir'),
     });
     ad.customData = await ad.readAsDict('custom_data');
     return ad;
@@ -42,7 +39,7 @@ const EX = {
 
   getConfigDefaults() {
     const df = {
-      dir: pathInRepo('cfg.@' + hostname),
+      dir: pathLib.join(initialWorkingDirectory, 'cfg.@' + hostname),
     };
     return df;
   },
