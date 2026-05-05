@@ -49,6 +49,20 @@ which debug options you want.
 
 
 
+`/anno/`
+--------
+
+This is the URL namespace where we serve Web Annotation Protocol,
+with some modifications:
+
+* `GET /anno/`: Disabled (HTTP/405 Method Not Allowed).
+  By the anno standard, this should give you all annotations on the entire
+  server. When someone casually explores the URL namespace, this might
+  inadvertently cause a lot of server load, and a massive data transfer.
+  Use `/anno/by/` to search more specifically (see below).
+
+
+
 `/anno/by/subject_target<options>/<IRI>`
 ----------------------------------------
 
