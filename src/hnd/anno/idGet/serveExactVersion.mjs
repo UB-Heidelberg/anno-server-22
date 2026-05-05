@@ -10,7 +10,7 @@ import browserRedirect from './browserRedirect.mjs';
 import lookupExactVersion from './lookupExactVersion.mjs';
 
 const {
-  methodNotAllowed,
+  badVerb,
 } = httpErrors.throwable;
 
 
@@ -27,7 +27,7 @@ const EX = async function serveExactVersion(ctx) {
   if (wantText) { ftrOpt.type = 'plain'; }
 
   if (req.method === 'HEAD') { return sendFinalTextResponse(req, '', ftrOpt); }
-  if (req.method !== 'GET') { throw methodNotAllowed(); }
+  if (req.method !== 'GET') { throw badVerb(); }
 
   const reply = genericAnnoMeta.add(srv, idParts, found.annoDetails);
 

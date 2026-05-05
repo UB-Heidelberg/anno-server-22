@@ -11,7 +11,7 @@ import findLatest from './findLatestVersionNumsForBaseId.mjs';
 const versionSep = ubhdAnnoIdFmt.versionNumberSeparator;
 
 const {
-  methodNotAllowed,
+  badVerb,
   noSuchAnno,
 } = httpErrors.throwable;
 
@@ -22,7 +22,7 @@ function uts2iso(u) { return (new Date(u * 1e3)).toISOString(); }
 
 const EX = async function listVersions(ctx) {
   const { srv, req, idParts } = ctx;
-  if (req.method !== 'GET') { throw methodNotAllowed(); }
+  if (req.method !== 'GET') { throw badVerb(); }
 
   /* Example for an annotation with many versions:
      https://anno.ub.uni-heidelberg.de/anno/anno/JhTAtRbrSOib9OJERGptUg */
