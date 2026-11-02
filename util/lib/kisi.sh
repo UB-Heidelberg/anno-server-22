@@ -19,19 +19,31 @@ function chapterize () {
   esac
 
   [ -n "$DESCR" ] || DESCR="$*"
-  echo -n "==== $DESCR "
-  [[ "$FLAGS" == *,--cwd,* ]] && echo -n "@ $PWD "
-  echo '===='
-  [ "$#" == 0 ] && return 0
+  [[ "$FLAGS" == *,--cwd,* ]] && DESCR+=" @ $PWD"
+  local BAR_FMT='====[%(%F %T %Z)T]=== %s ====\n'
+  printf -- "$BAR_FMT" -1 "$DESCR"
+  [ "$#" -ge 1 ] || return 0
+  local DURA_SEC="$EPOCHSECONDS" DURA_HR=
   "$@"
   local RV=$?
+  let DURA_SEC="$EPOCHSECONDS-$DURA_SEC"
   if [ "$RV" == 0 ]; then
-    echo "---- done: $DESCR ----"
-    echo
+    DESCR="done: $DESCR"
   else
     echo
-    [ "$RV" == 0 ] || echo "E: Failed (rv=$RV) to $DESCR" >&2
+    DESCR="FAIL (rv=$RV): $DESCR"
   fi
+  TZ=UTC printf -v DURA_HR '%( %Hh  %Mm  %Ss )T' "$DURA_SEC"
+  DURA_HR="${DURA_HR// 00[hms] /}"
+  DURA_HR="${DURA_HR//  / }"
+  DURA_HR="${DURA_HR//  / }"
+  DURA_HR="${DURA_HR# }"
+  DURA_HR="${DURA_HR% }"
+  DURA_HR="${DURA_HR// /:}"
+  DURA_HR="${DURA_HR#0}"
+  [ -n "$DURA_HR" ] || DURA_HR='0s'
+  printf -- "${BAR_FMT//=/-}" -1 "$DESCR [$DURA_HR]"
+  echo
   return "$RV"
 }
 
